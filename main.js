@@ -871,6 +871,12 @@ client.on("interactionCreate", async (interaction) => {
       } else if (pluginID === "pp") {
         pluginName = "ParkourProject";
         roleid = "1215399455835029504";
+      }else{
+        await interaction.reply({
+          content: "Invalid plugin ID",
+          ephemeral: true,
+        });
+        return;
       }
       const embed = new EmbedBuilder()
         .setColor("#FFFF00")
@@ -884,6 +890,10 @@ client.on("interactionCreate", async (interaction) => {
           text: "Made with ❤️ by LunarcatOwO",
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        })
+        .addFields({
+          name: "Download",
+          value: `[Click me to download the plugin](${await getLatestReleaseAsset("Iseal-plugin-developement", pluginName)})`,
         });
       if (!interaction.guild) {
         await interaction.reply({ embeds: [embed] });
