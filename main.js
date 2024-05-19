@@ -92,6 +92,10 @@ const commands = [
     description: "Get the latest download link",
   },
   {
+    name: "downloadpre",
+    description:"Get the latest pre-release download link for the plugins",
+  },
+  {
     name: "update",
     description: "Sends out a message for plugin updates (ADMIN ONLY)",
   },
@@ -115,7 +119,7 @@ const commands = [
     name: "botgithub",
     description:
       "Get the github link to the bot's code to report issues and give suggestions!",
-  },
+  }
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -174,6 +178,39 @@ async function getLatestReleaseAsset(owner, repo) {
     return downloadUrl;
   }
 }
+async function getLatestPreReleaseAsset(owner, repo){
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases`
+    );
+    const releases = await response.json();
+    const preReleases = releases.filter(release => release.prerelease);
+    const latestPreRelease = preReleases[0]; // Assuming the first one is the latest
+    const asset = latestPreRelease.assets[0]; // Assuming you want the first asset
+    const downloadUrl = asset.browser_download_url;
+    console.log(downloadUrl);
+    return downloadUrl;
+  } catch (error) {
+    console.error("Error fetching release data:", error);
+    console.log("Giving user Default spigot download link...");
+    let downloadUrl;
+    if (repo === "Powergems") {
+      downloadUrl =
+        "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
+    } else if (repo == "OrePowers") {
+
+      downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
+    } else if (repo == "Valocraft") {
+      downloadUrl =
+        "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
+    } else if (repo == "ParkourProject") {
+      downloadUrl =
+        "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
+    }
+    console.log(downloadUrl);
+    return downloadUrl;
+  }
+}
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -211,6 +248,11 @@ client.on("interactionCreate", async (interaction) => {
             inline: true,
           },
           {
+            name: "/downloadpre",
+            value:"Get the latest pre-release download link for the plugins",
+            inline: true,
+          },
+          {
             name: "/format <type>",
             value:
               "Get how to format your bug report or suggestions (for the plugins)",
@@ -220,7 +262,7 @@ client.on("interactionCreate", async (interaction) => {
             name: "/botgithub",
             value:
               "Get the github link to the bot's code to report issues and give suggestions!",
-          }
+          },      
         )
         .setTimestamp()
         .setFooter({
@@ -609,6 +651,49 @@ client.on("interactionCreate", async (interaction) => {
 [Click me to download OrePowers](${OPdownloadLink})
 [Click me to download Valocraft](${VCdownloadLink})
 [Click me to download ParkourProject](${PPdownloadLink})`
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "Made with ❤️ by LunarcatOwO",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+      if (!interaction.guild) {
+        await interaction.reply({ embeds: [embed] });
+        return;
+      }
+      const member =
+        interaction.member ||
+        (await interaction.guild.members.fetch(interaction.user.id));
+      const roleNamesToCheck = TRIGGER_ROLES;
+      const hasRole = member.roles.cache.some((role) =>
+        roleNamesToCheck.includes(role.name)
+      );
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content:
+          "an error has occured, try again, if it doesnt work contact lunarcatowo",
+        ephemeral: true,
+      });
+    }
+  }
+  if (interaction.commandName === "downloadpre") {
+    try {
+      const PGdownloadLink = await getLatestPreReleaseAsset(
+        "ISeal-plugin-developement",
+        "PowerGems"
+      );
+      const embed = new EmbedBuilder()
+        .setColor("#0099ff")
+        .setTitle("Download Link for the plugins!")
+        .setDescription(
+          `[Click me to download PowerGems Pre-Release](${PGdownloadLink})`
         )
         .setTimestamp()
         .setFooter({
