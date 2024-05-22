@@ -30,17 +30,24 @@ import {
   TextInputBuilder,
   ActionRowBuilder,
   CategoryChannel,
+  Collection,
 } from "discord.js";
 import { config } from "dotenv";
+const cooldowns = new Collection()
 // Loading the environment variables
 config();
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const TRIGGER_ROLES = process.env.TRIGGER_ROLES;
+const modmailChannel = process.env.modmailChannel
 const commands = [
   {
     name: "help",
     description: "Get help on how to use the bot",
+  },
+  {
+    name: "modmail",
+    description: "Sends an message to staff"
   },
   {
     name: "resourcepack",
@@ -123,6 +130,7 @@ const commands = [
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
+
 
 try {
   console.log("Started refreshing application (/) commands.");
@@ -226,6 +234,7 @@ client.on("interactionCreate", async (interaction) => {
         .setTitle("**Commands**")
         .addFields(
           { name: "/help", value: "Shows this page", inline: true },
+          {name:"/modmail", value: "Sends an message to staff"},
           {
             name: "/resourcepack",
             value: "Sends the resourcepack download links",
@@ -289,6 +298,48 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.reply({ embeds: [embed], ephemeral: true });
       }
     } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content:
+          "an error has occured, try again, if it doesnt work contact lunarcatowo",
+        ephemeral: true,
+      });
+    }
+  }
+  if (interaction.commandName === "modmail"){
+    try{
+      if (!interaction.guild) {
+        await interaction.reply({ content: "You cannot trigger this command in dms", ephemeral: true});
+        return;
+      }
+      const now = Date.now()
+      const cooldownAmount = 1*1000*60*60
+      if (!cooldowns.has(interaction.user.id)) {
+        cooldowns.set(interaction.user.id, now);
+    } else {
+        const expirationTime = cooldowns.get(interaction.user.id) + cooldownAmount;
+    
+        if (now < expirationTime) {
+            const timeLeft = (expirationTime - now) / 1000 / 60;
+            return await interaction.reply({content: `Please wait ${timeLeft.toFixed(1)} more minute(s) before reusing the command.`, ephemeral: true});
+        }
+    
+        cooldowns.set(interaction.user.id, now);
+        setTimeout(() => cooldowns.delete(interaction.user.id), cooldownAmount);
+      }
+      const modal = new ModalBuilder()
+        .setCustomId("modmailModal")
+        .setTitle("Modmail");
+      const mailMessage = new TextInputBuilder()
+        .setCustomId("mailMessage")
+        .setLabel("Message for staff")
+        .setStyle(2)
+        .setRequired(true);
+      const firstActionRow = new ActionRowBuilder().addComponents(
+        mailMessage);
+      modal.addComponents(firstActionRow);
+      await interaction.showModal(modal)
+    }catch(error){
       console.error(error);
       await interaction.reply({
         content:
@@ -998,6 +1049,46 @@ client.on("interactionCreate", async (interaction) => {
       }
     } catch (error) {
       console.error(error);
+      await interaction.reply({
+        content:
+          "an error has occured, try again, if it doesnt work contact lunarcatowo",
+        ephemeral: true,
+      });
+    }
+  }
+  if (interaction.customId === "modmailModal") {
+    try{ 
+      if (!interaction.guild) {
+        await interaction.reply({ content: "ummmm how. did you. trigger this." });
+        return;
+      }
+      const mailMessage = interaction.fields.getTextInputValue("mailMessage");
+      const channel = interaction.guild.channels.cache.get(modmailChannel)
+      const embed = new EmbedBuilder()
+        .setColor("#00ff00")
+        .setTitle(`New Modmail`)
+        .setDescription(`Information are the following:`)
+        .addFields(
+          {
+            name: "Content",
+            value: `${mailMessage}`
+          },
+          {
+            name: "User who sent the message",
+            value: `Username: ${interaction.user.username}
+ID: ${interaction.user.id}`
+          },
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "Made with ❤️ by LunarcatOwO",
+          iconURL:
+            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
+        });
+      await channel.send({embeds: [embed]})
+      await interaction.reply({content: "Your message has been sent to the staff team!", ephemeral: true})
+    }catch(error){
+      console.error(error)
       await interaction.reply({
         content:
           "an error has occured, try again, if it doesnt work contact lunarcatowo",
