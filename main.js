@@ -348,43 +348,7 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
   }
-  if (interaction.commandName === "resourcepack") {
-    try {
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("Resource Pack")
-        .setDescription(
-          `[Click me to download the default resourcepack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1193993804672421918/Powergems_Pack.zip?ex=662a00a2&is=6628af22&hm=ab75523cb14d11b57debef3faa3616e111e2f57d7a4674131d8d59740eeeba10&)
-[Click me to download the magic resource pack for PowerGems](https://cdn.discordapp.com/attachments/1157658269318402058/1194529976645582858/PowerGems_magic_pack.zip?ex=6629f9bb&is=6628a83b&hm=157d405d2f872ff9365371da79c110c793cb6e89178a84b3d508e4f65c9f7218&)`
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
-  }
-  if (interaction.commandName === "rp") {
+  if (interaction.commandName === "resourcepack" || interaction.commandName === "rp") {
     try {
       const resourcepackmessageID = '1193993805012140103';
       const channel = client.channels.cache.get('1157658269318402058');
@@ -431,7 +395,6 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
   }
-
   if (interaction.commandName === "rules") {
     try {
       const embed = new EmbedBuilder()
