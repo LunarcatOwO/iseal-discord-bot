@@ -33,13 +33,15 @@ import {
   Collection,
 } from "discord.js";
 import { config } from "dotenv";
-const cooldowns = new Collection()
+const cooldowns = new Collection();
 // Loading the environment variables
 config();
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const TRIGGER_ROLES = process.env.TRIGGER_ROLES;
-const modmailChannel = process.env.modmailChannel
+const modmailChannel = process.env.modmailChannel;
+const resourcepackmessageID = "1193993805012140103";
+const magicresourcepackmessageID = "1194529976666570863";
 const commands = [
   {
     name: "help",
@@ -47,7 +49,7 @@ const commands = [
   },
   {
     name: "modmail",
-    description: "Sends an message to staff"
+    description: "Sends an message to staff",
   },
   {
     name: "resourcepack",
@@ -100,7 +102,7 @@ const commands = [
   },
   {
     name: "downloadpre",
-    description:"Get the latest pre-release download link for the plugins",
+    description: "Get the latest pre-release download link for the plugins",
   },
   {
     name: "update",
@@ -126,11 +128,10 @@ const commands = [
     name: "botgithub",
     description:
       "Get the github link to the bot's code to report issues and give suggestions!",
-  }
+  },
 ];
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
-
 
 try {
   console.log("Started refreshing application (/) commands.");
@@ -156,6 +157,32 @@ const client = new Client({
   allowedMentions: { parse: ["users", "roles", "everyone"] },
 });
 
+async function getResourcepack() {
+  try {
+    const resourceChannel = await client.channels.cache.get("1157658269318402058");
+    const resourcepackmessage = await resourceChannel.messages.fetch(
+      resourcepackmessageID
+    );
+    const resourcepackattachmentURL =
+      await resourcepackmessage.attachments.first()?.url;
+    return resourcepackattachmentURL;
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function getMagicResourcePack() {
+  try {
+    const resourceChannel = await client.channels.cache.get("1157658269318402058");
+    const magicresourcepackmessage = await resourceChannel.messages.fetch(
+      magicresourcepackmessageID
+    );
+    const magicresourcepackattachmentURL =
+      await magicresourcepackmessage.attachments.first()?.url;
+    return magicresourcepackattachmentURL;
+  } catch (error) {
+    console.error(error);
+  }
+}
 async function getLatestReleaseAsset(owner, repo) {
   try {
     const response = await fetch(
@@ -186,13 +213,13 @@ async function getLatestReleaseAsset(owner, repo) {
     return downloadUrl;
   }
 }
-async function getLatestPreReleaseAsset(owner, repo){
+async function getLatestPreReleaseAsset(owner, repo) {
   try {
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/releases`
     );
     const releases = await response.json();
-    const preReleases = releases.filter(release => release.prerelease);
+    const preReleases = releases.filter((release) => release.prerelease);
     const latestPreRelease = preReleases[0]; // Assuming the first one is the latest
     const asset = latestPreRelease.assets[0]; // Assuming you want the first asset
     const downloadUrl = asset.browser_download_url;
@@ -206,7 +233,6 @@ async function getLatestPreReleaseAsset(owner, repo){
       downloadUrl =
         "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
     } else if (repo == "OrePowers") {
-
       downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
     } else if (repo == "Valocraft") {
       downloadUrl =
@@ -234,7 +260,7 @@ client.on("interactionCreate", async (interaction) => {
         .setTitle("**Commands**")
         .addFields(
           { name: "/help", value: "Shows this page", inline: true },
-          {name:"/modmail", value: "Sends an message to staff"},
+          { name: "/modmail", value: "Sends an message to staff" },
           {
             name: "/resourcepack",
             value: "Sends the resourcepack download links",
@@ -258,7 +284,7 @@ client.on("interactionCreate", async (interaction) => {
           },
           {
             name: "/downloadpre",
-            value:"Get the latest pre-release download link for the plugins",
+            value: "Get the latest pre-release download link for the plugins",
             inline: true,
           },
           {
@@ -271,7 +297,7 @@ client.on("interactionCreate", async (interaction) => {
             name: "/botgithub",
             value:
               "Get the github link to the bot's code to report issues and give suggestions!",
-          },      
+          }
         )
         .setTimestamp()
         .setFooter({
@@ -306,24 +332,33 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
   }
-  if (interaction.commandName === "modmail"){
-    try{
+  if (interaction.commandName === "modmail") {
+    try {
       if (!interaction.guild) {
-        await interaction.reply({ content: "You cannot trigger this command in dms", ephemeral: true});
+        await interaction.reply({
+          content: "You cannot trigger this command in dms",
+          ephemeral: true,
+        });
         return;
       }
-      const now = Date.now()
-      const cooldownAmount = 1*1000*60*60
+      const now = Date.now();
+      const cooldownAmount = 1 * 1000 * 60 * 60;
       if (!cooldowns.has(interaction.user.id)) {
         cooldowns.set(interaction.user.id, now);
-    } else {
-        const expirationTime = cooldowns.get(interaction.user.id) + cooldownAmount;
-    
+      } else {
+        const expirationTime =
+          cooldowns.get(interaction.user.id) + cooldownAmount;
+
         if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000 / 60;
-            return await interaction.reply({content: `Please wait ${timeLeft.toFixed(1)} more minute(s) before reusing the command.`, ephemeral: true});
+          const timeLeft = (expirationTime - now) / 1000 / 60;
+          return await interaction.reply({
+            content: `Please wait ${timeLeft.toFixed(
+              1
+            )} more minute(s) before reusing the command.`,
+            ephemeral: true,
+          });
         }
-    
+
         cooldowns.set(interaction.user.id, now);
         setTimeout(() => cooldowns.delete(interaction.user.id), cooldownAmount);
       }
@@ -335,11 +370,10 @@ client.on("interactionCreate", async (interaction) => {
         .setLabel("Message for staff")
         .setStyle(2)
         .setRequired(true);
-      const firstActionRow = new ActionRowBuilder().addComponents(
-        mailMessage);
+      const firstActionRow = new ActionRowBuilder().addComponents(mailMessage);
       modal.addComponents(firstActionRow);
-      await interaction.showModal(modal)
-    }catch(error){
+      await interaction.showModal(modal);
+    } catch (error) {
       console.error(error);
       await interaction.reply({
         content:
@@ -348,15 +382,13 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
   }
-  if (interaction.commandName === "resourcepack" || interaction.commandName === "rp") {
+  if (
+    interaction.commandName === "resourcepack" ||
+    interaction.commandName === "rp"
+  ) {
     try {
-      const resourcepackmessageID = '1193993805012140103';
-      const channel = client.channels.cache.get('1157658269318402058');
-      const resourcepackmessage = await channel.messages.fetch(resourcepackmessageID);
-      const magicresourcepackmessageID = '1194529976666570863'
-      const magicresourcepackmessage = await channel.messages.fetch(magicresourcepackmessageID)
-      const resourcepackattachmentURL = resourcepackmessage.attachments.first()?.url
-      const magicresourcepackattachmentURL = magicresourcepackmessage.attachments.first()?.url
+      resourcepackattachmentURL = await getResourcepack();
+      magicresourcepackattachmentURL = await getMagicResourcePack();
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle("Resource Pack")
@@ -977,7 +1009,7 @@ client.on("interactionCreate", async (interaction) => {
       } else if (pluginID === "pp") {
         pluginName = "ParkourProject";
         roleid = "1215399455835029504";
-      }else{
+      } else {
         await interaction.reply({
           content: "Invalid plugin ID",
           ephemeral: true,
@@ -999,7 +1031,10 @@ client.on("interactionCreate", async (interaction) => {
         })
         .addFields({
           name: "Download",
-          value: `[Click me to download the plugin](${await getLatestReleaseAsset("Iseal-plugin-developement", pluginName)})`,
+          value: `[Click me to download the plugin](${await getLatestReleaseAsset(
+            "Iseal-plugin-developement",
+            pluginName
+          )})`,
         });
       if (!interaction.guild) {
         await interaction.reply({ embeds: [embed] });
@@ -1027,13 +1062,15 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
   if (interaction.customId === "modmailModal") {
-    try{ 
+    try {
       if (!interaction.guild) {
-        await interaction.reply({ content: "ummmm how. did you. trigger this." });
+        await interaction.reply({
+          content: "ummmm how. did you. trigger this.",
+        });
         return;
       }
       const mailMessage = interaction.fields.getTextInputValue("mailMessage");
-      const channel = interaction.guild.channels.cache.get(modmailChannel)
+      const channel = interaction.guild.channels.cache.get(modmailChannel);
       const embed = new EmbedBuilder()
         .setColor("#00ff00")
         .setTitle(`New Modmail`)
@@ -1041,13 +1078,13 @@ client.on("interactionCreate", async (interaction) => {
         .addFields(
           {
             name: "Content",
-            value: `${mailMessage}`
+            value: `${mailMessage}`,
           },
           {
             name: "User who sent the message",
             value: `Username: ${interaction.user.username}
-ID: ${interaction.user.id}`
-          },
+ID: ${interaction.user.id}`,
+          }
         )
         .setTimestamp()
         .setFooter({
@@ -1055,10 +1092,13 @@ ID: ${interaction.user.id}`
           iconURL:
             "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
         });
-      await channel.send({embeds: [embed]})
-      await interaction.reply({content: "Your message has been sent to the staff team!", ephemeral: true})
-    }catch(error){
-      console.error(error)
+      await channel.send({ embeds: [embed] });
+      await interaction.reply({
+        content: "Your message has been sent to the staff team!",
+        ephemeral: true,
+      });
+    } catch (error) {
+      console.error(error);
       await interaction.reply({
         content:
           "an error has occured, try again, if it doesnt work contact lunarcatowo",
@@ -1116,7 +1156,7 @@ client.on("guildMemberAdd", async (member) => {
       .setColor("#0099ff")
       .setTitle("Welcome to the server!")
       .setDescription(
-        "Welcome to the server! if you are looking for the resource pack then run /resourcepack or /resources and it will automatically help you with that. Again welcome to the server and if you have any questions then just ask!"
+        "Welcome to the server! if you are looking for the resource pack then run /resourcepack and it will automatically help you with that. Again welcome to the server and if you have any questions then just ask!"
       )
       .setTimestamp()
       .setFooter({
@@ -1124,7 +1164,7 @@ client.on("guildMemberAdd", async (member) => {
         iconURL:
           "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
       });
-    await member.user.send({ embed: [embed] });
+    await member.user.send({ content: "Hello!", embed: [embed] });
   } catch (error) {
     console.error(`Could not send welcome DM to ${member.displayName}.`, error);
   }
