@@ -387,8 +387,8 @@ client.on("interactionCreate", async (interaction) => {
     interaction.commandName === "rp"
   ) {
     try {
-      resourcepackattachmentURL = await getResourcepack();
-      magicresourcepackattachmentURL = await getMagicResourcePack();
+      const resourcepackattachmentURL = await getResourcepack();
+      const magicresourcepackattachmentURL = await getMagicResourcePack();
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle("Resource Pack")
