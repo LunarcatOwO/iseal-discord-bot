@@ -32,104 +32,16 @@ import {
   CategoryChannel,
   Collection,
 } from "discord.js";
-import { config } from "dotenv";
-const cooldowns = new Collection();
 // Loading the environment variables
-config();
-const TOKEN = process.env.TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
-const TRIGGER_ROLES = process.env.TRIGGER_ROLES;
-const modmailChannel = process.env.modmailChannel;
-const resourcepackmessageID = "1193993805012140103";
-const magicresourcepackmessageID = "1194529976666570863";
-const commands = [
-  {
-    name: "help",
-    description: "Get help on how to use the bot",
-  },
-  {
-    name: "modmail",
-    description: "Sends an message to staff",
-  },
-  {
-    name: "resourcepack",
-    description: "Get a link to download the resource pack",
-  },
-  {
-    name: "rp",
-    description: "Get a link to download the resource pack",
-  },
-  {
-    name: "rules",
-    description: "Get the server's rules",
-  },
-  {
-    name: "config",
-    description: "Get how to access the config file",
-  },
-  {
-    name: "wiki",
-    description: "Get the wiki link",
-    options: [
-      {
-        name: "powergems",
-        description: "Get the wiki link for powergems",
-        type: 1,
-      },
-      {
-        name: "orepowers",
-        description:
-          "Get the wiki link for orepowers (wiki coming if the plugin reaches 2k downloads)",
-        type: 1,
-      },
-      {
-        name: "valocraft",
-        description:
-          "Get the wiki link for valocraft (wiki coming if the plugin reaches 2k downloads)",
-        type: 1,
-      },
-      {
-        name: "parkourproject",
-        description:
-          "Get the wiki link for parkourproject (wiki coming if the plugin reaches 2k downloads)",
-        type: 1,
-      },
-    ],
-  },
-  {
-    name: "download",
-    description: "Get the latest download link",
-  },
-  {
-    name: "downloadpre",
-    description: "Get the latest pre-release download link for the plugins",
-  },
-  {
-    name: "update",
-    description: "Sends out a message for plugin updates (ADMIN ONLY)",
-  },
-  {
-    name: "format",
-    description: "Get how to format your bug reports or suggestions",
-    options: [
-      {
-        name: "bug",
-        description: "Get how to format your bug reports",
-        type: 1,
-      },
-      {
-        name: "suggestion",
-        description: "Get how to format your suggestions",
-        type: 1,
-      },
-    ],
-  },
-  {
-    name: "botgithub",
-    description:
-      "Get the github link to the bot's code to report issues and give suggestions!",
-  },
-];
+import {
+  TOKEN,
+  CLIENT_ID,
+  TRIGGER_ROLES,
+  modmailChannel,
+  resourcepackmessageID,
+  magicresourcepackmessageID,
+  commands,
+} from "./constants.js";
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -146,7 +58,7 @@ try {
   console.error(error);
 }
 
-const client = new Client({
+export const BOT = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -156,831 +68,66 @@ const client = new Client({
   ],
   allowedMentions: { parse: ["users", "roles", "everyone"] },
 });
-
-async function getResourcepack() {
-  try {
-    const resourceChannel = await client.channels.cache.get("1157658269318402058");
-    const resourcepackmessage = await resourceChannel.messages.fetch(
-      resourcepackmessageID
-    );
-    const resourcepackattachmentURL =
-      await resourcepackmessage.attachments.first()?.url;
-    return resourcepackattachmentURL;
-  } catch (error) {
-    console.error(error);
-  }
-}
-async function getMagicResourcePack() {
-  try {
-    const resourceChannel = await client.channels.cache.get("1157658269318402058");
-    const magicresourcepackmessage = await resourceChannel.messages.fetch(
-      magicresourcepackmessageID
-    );
-    const magicresourcepackattachmentURL =
-      await magicresourcepackmessage.attachments.first()?.url;
-    return magicresourcepackattachmentURL;
-  } catch (error) {
-    console.error(error);
-  }
-}
-async function getLatestReleaseAsset(owner, repo) {
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
-    );
-    const release = await response.json();
-    const asset = release.assets[0]; // Assuming you want the first asset
-    const downloadUrl = asset.browser_download_url;
-    console.log(downloadUrl);
-    return downloadUrl;
-  } catch (error) {
-    console.error("Error fetching release data:", error);
-    console.log("Giving user Default spigot download link...");
-    let downloadUrl;
-    if (repo === "Powergems") {
-      downloadUrl =
-        "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
-    } else if (repo == "OrePowers") {
-      downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
-    } else if (repo == "Valocraft") {
-      downloadUrl =
-        "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
-    } else if (repo == "ParkourProject") {
-      downloadUrl =
-        "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
-    }
-    console.log(downloadUrl);
-    return downloadUrl;
-  }
-}
-async function getLatestPreReleaseAsset(owner, repo) {
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/releases`
-    );
-    const releases = await response.json();
-    const preReleases = releases.filter((release) => release.prerelease);
-    const latestPreRelease = preReleases[0]; // Assuming the first one is the latest
-    const asset = latestPreRelease.assets[0]; // Assuming you want the first asset
-    const downloadUrl = asset.browser_download_url;
-    console.log(downloadUrl);
-    return downloadUrl;
-  } catch (error) {
-    console.error("Error fetching release data:", error);
-    console.log("Giving user Default spigot download link...");
-    let downloadUrl;
-    if (repo === "Powergems") {
-      downloadUrl =
-        "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
-    } else if (repo == "OrePowers") {
-      downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
-    } else if (repo == "Valocraft") {
-      downloadUrl =
-        "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
-    } else if (repo == "ParkourProject") {
-      downloadUrl =
-        "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
-    }
-    console.log(downloadUrl);
-    return downloadUrl;
-  }
-}
-
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+import {
+  getLatestReleaseAsset,
+  getLatestPreReleaseAsset,
+} from "./modules/util/getreleaseasset.js";
+BOT.on("ready", () => {
+  console.log(`Logged in as ${BOT.user.tag}!`);
 });
-
-client.on("interactionCreate", async (interaction) => {
+import { help } from "./modules/commands/help.js";
+import { modmail } from "./modules/commands/modmail.js";
+import { resourcepack } from "./modules/commands/resourcepack.js";
+import { rules } from "./modules/commands/rules.js";
+import { config } from "./modules/commands/config.js";
+import { wiki } from "./modules/commands/wiki.js";
+import { download } from "./modules/commands/download.js";
+import { downloadpre } from "./modules/commands/downloadpre.js";
+import { update } from "./modules/commands/update.js";
+import { format } from "./modules/commands/format.js";
+import { botgithub } from "./modules/commands/botgithub.js";
+BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "help") {
-    try {
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("**Commands**")
-        .addFields(
-          { name: "/help", value: "Shows this page", inline: true },
-          { name: "/modmail", value: "Sends an message to staff" },
-          {
-            name: "/resourcepack",
-            value: "Sends the resourcepack download links",
-            inline: true,
-          },
-          { name: "/rules", value: "Get the server's rules", inline: true },
-          {
-            name: "/config",
-            value: "Get how to access the config files for your plugins",
-            inline: true,
-          },
-          {
-            name: "/wiki <name>",
-            value: "Get the wiki link for the plugin you want to know about",
-            inline: true,
-          },
-          {
-            name: "/download",
-            value: "Get the latest download link for the plugins",
-            inline: true,
-          },
-          {
-            name: "/downloadpre",
-            value: "Get the latest pre-release download link for the plugins",
-            inline: true,
-          },
-          {
-            name: "/format <type>",
-            value:
-              "Get how to format your bug report or suggestions (for the plugins)",
-            inline: true,
-          },
-          {
-            name: "/botgithub",
-            value:
-              "Get the github link to the bot's code to report issues and give suggestions!",
-          }
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    help(interaction);
   }
   if (interaction.commandName === "modmail") {
-    try {
-      if (!interaction.guild) {
-        await interaction.reply({
-          content: "You cannot trigger this command in dms",
-          ephemeral: true,
-        });
-        return;
-      }
-      const now = Date.now();
-      const cooldownAmount = 1 * 1000 * 60 * 60;
-      if (!cooldowns.has(interaction.user.id)) {
-        cooldowns.set(interaction.user.id, now);
-      } else {
-        const expirationTime =
-          cooldowns.get(interaction.user.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-          const timeLeft = (expirationTime - now) / 1000 / 60;
-          return await interaction.reply({
-            content: `Please wait ${timeLeft.toFixed(
-              1
-            )} more minute(s) before reusing the command.`,
-            ephemeral: true,
-          });
-        }
-
-        cooldowns.set(interaction.user.id, now);
-        setTimeout(() => cooldowns.delete(interaction.user.id), cooldownAmount);
-      }
-      const modal = new ModalBuilder()
-        .setCustomId("modmailModal")
-        .setTitle("Modmail");
-      const mailMessage = new TextInputBuilder()
-        .setCustomId("mailMessage")
-        .setLabel("Message for staff")
-        .setStyle(2)
-        .setRequired(true);
-      const firstActionRow = new ActionRowBuilder().addComponents(mailMessage);
-      modal.addComponents(firstActionRow);
-      await interaction.showModal(modal);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    modmail(interaction);
   }
   if (
     interaction.commandName === "resourcepack" ||
     interaction.commandName === "rp"
   ) {
-    try {
-      const resourcepackattachmentURL = await getResourcepack();
-      const magicresourcepackattachmentURL = await getMagicResourcePack();
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("Resource Pack")
-        .setDescription(
-          `[Click me to download the default resourcepack for PowerGems](${resourcepackattachmentURL})
-[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})`
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+   resourcepack(interaction)
   }
   if (interaction.commandName === "rules") {
-    try {
-      const embed = new EmbedBuilder()
-        .setColor("#00ff00")
-        .setTitle("Rules for the server")
-        .setDescription("Read the following carefully!")
-        .addFields(
-          {
-            name: "1️⃣ Spam!",
-            value: "Please dont spam. Nobody likes it and you will get muted.",
-          },
-          {
-            name: "2️⃣ Help us to help you!",
-            value:
-              'If you are reporting a bug/issue, please give plenty of information. Simply just saying "Help" isn\'t very useful.',
-          },
-          {
-            name: "3️⃣ We have tickets!",
-            value:
-              "To get individual support, you can open a ticket in the <#1157666504461000714> channel.",
-          },
-          {
-            name: "4️⃣ Patience",
-            value:
-              "When asking for help, please be patient. We will get to you as soon as possible, but we all have a life too. (I know, shocking)",
-          },
-          {
-            name: "5️⃣ Tone.",
-            value:
-              "Keep a friendly tone and try not to swear, a little is allowed, but dont exagerate",
-          }
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    rules(interaction);
   }
   if (interaction.commandName === "config") {
-    try {
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("How to access the config file")
-        .setDescription(
-          "Follow the following steps if you do not know how to access the config file"
-        )
-        .addFields(
-          {
-            name: "Step 1",
-            value: "Go to your server's file manager",
-            inline: true,
-          },
-          {
-            name: "Step 2",
-            value: "Open the `~/plugins` folder",
-            inline: true,
-          },
-          {
-            name: "Step 3",
-            value:
-              "Open the folder with the plugin's name. example of the route: `~/plugins/PowerGems`",
-            inline: true,
-          },
-          {
-            name: "Step 4",
-            value: "Open the `config.yml` file",
-            inline: true,
-          }
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    config(interaction)
   }
   if (interaction.commandName === "wiki") {
-    try {
-      const subcommand = interaction.options.getSubcommand();
-      if (subcommand === "powergems") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("Link to PowerGems wiki")
-          .setTimestamp()
-          .setDescription(
-            "[Click me](https://powergems.iseal.dev) for Powergems wiki"
-          )
-          .setFooter({
-            text: "Made with ❤️ by LunarcatOwO",
-            iconURL:
-              "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-      if (subcommand === "orepowers") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("Link to OrePowers wiki")
-          .setDescription("Coming soon (if the plugin hits 2k downloads)")
-          .setTimestamp()
-          .setFooter({
-            text: "Made with ❤️ by LunarcatOwO",
-            iconURL:
-              "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-      if (subcommand === "valocraft") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("Link to Valocraft wiki")
-          .setDescription("Coming soon (if the plugin hits 2k downloads)")
-          .setTimestamp()
-          .setFooter({
-            text: "Made with ❤️ by LunarcatOwO",
-            iconURL:
-              "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-      if (subcommand === "parkourproject") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("Link to ParkourProject wiki")
-          .setDescription("Coming soon (if the plugin hits 2k downloads)")
-          .setTimestamp()
-          .setFooter({
-            text: "Made with ❤️ by LunarcatOwO",
-            iconURL:
-              "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    wiki(interaction)
   }
   if (interaction.commandName === "download") {
-    try {
-      const PGdownloadLink = await getLatestReleaseAsset(
-        "ISeal-plugin-developement",
-        "PowerGems"
-      );
-      const OPdownloadLink = await getLatestReleaseAsset(
-        "ISeal-plugin-developement",
-        "OrePowers"
-      );
-      const VCdownloadLink = await getLatestReleaseAsset(
-        "ISeal-plugin-developement",
-        "Valocraft"
-      );
-      const PPdownloadLink = await getLatestReleaseAsset(
-        "ISeal-plugin-developement",
-        "ParkourProject"
-      );
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("Download Link for the plugins!")
-        .setDescription(
-          `[Click me to download PowerGems](${PGdownloadLink})
-[Click me to download OrePowers](${OPdownloadLink})
-[Click me to download Valocraft](${VCdownloadLink})
-[Click me to download ParkourProject](${PPdownloadLink})`
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    download(interaction)
   }
   if (interaction.commandName === "downloadpre") {
-    try {
-      const PGdownloadLink = await getLatestPreReleaseAsset(
-        "ISeal-plugin-developement",
-        "PowerGems"
-      );
-      const embed = new EmbedBuilder()
-        .setColor("#0099ff")
-        .setTitle("Download Link for the plugins!")
-        .setDescription(
-          `[Click me to download PowerGems Pre-Release](${PGdownloadLink})`
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    downloadpre(interaction)
   }
   if (interaction.commandName === "update") {
-    try {
-      const modal = new ModalBuilder()
-        .setCustomId("updateModal")
-        .setTitle("Update");
-      const pluginIDinput = new TextInputBuilder()
-        .setCustomId("pluginIDinput")
-        .setLabel("What is the ID for the plugin")
-        .setStyle(1)
-        .setMaxLength(2)
-        .setRequired(true);
-
-      const updateInfoInput = new TextInputBuilder()
-        .setCustomId("updateInfoInput")
-        .setLabel("What changed?")
-        .setStyle(2)
-        .setRequired(true);
-      const versionInfoInput = new TextInputBuilder()
-        .setCustomId("versionInfoInput")
-        .setLabel("Version of update")
-        .setStyle(1)
-        .setRequired(true);
-      const secondActionRow = new ActionRowBuilder().addComponents(
-        versionInfoInput
-      );
-      const firstActionRow = new ActionRowBuilder().addComponents(
-        pluginIDinput
-      );
-      const thirdActionRow = new ActionRowBuilder().addComponents(
-        updateInfoInput
-      );
-
-      modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
-      if (!interaction.guild) {
-        await interaction.reply({ content: "What are you thinking..." });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.showModal(modal);
-      } else {
-        await interaction.reply({
-          content: "What are you trying to do...",
-          ephemeral: true,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    update(interaction)
   }
   if (interaction.commandName === "format") {
-    try {
-      const subcommand = interaction.options.getSubcommand();
-      if (subcommand === "bug") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("How to format your bug report")
-          .setDescription(
-            "Please follow the following format to format your bug report"
-          )
-          .addFields(
-            {
-              name: "General information",
-              value: `Server software:
-Server version:
-Software build: (if applicable)
-Plugins on the server`,
-            },
-            {
-              name: "Plugin information",
-              value: `Plugin:
-Plugin version:
-Errors in console: (if applicable, preferably using https://mclo.gs/)`,
-            },
-            {
-              name: "Bug information:",
-              value: `Expected result:
-Actual result:
-Things tried:`,
-            }
-          )
-          .setTimestamp()
-          .setFooter({
-            text: "Made with ❤️ by LunarcatOwO",
-            iconURL:
-              "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-      if (subcommand === "suggestion") {
-        const embed = new EmbedBuilder()
-          .setColor("#0099ff")
-          .setTitle("How to format your suggestion")
-          .setDescription(
-            "Please follow the following format to format your suggestion"
-          )
-          .addFields({
-            name: "Information needed",
-            value: `Plugin Name:
-What to add:
-How it is currently (If applicable):
-Why it should be added:
-Extra Notes (If applicable):`,
-            inline: true,
-          });
-        if (!interaction.guild) {
-          await interaction.reply({ embeds: [embed] });
-          return;
-        }
-        const member =
-          interaction.member ||
-          (await interaction.guild.members.fetch(interaction.user.id));
-        const roleNamesToCheck = TRIGGER_ROLES;
-        const hasRole = member.roles.cache.some((role) =>
-          roleNamesToCheck.includes(role.name)
-        );
-        if (hasRole) {
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply({ embeds: [embed], ephemeral: true });
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    format(interaction)
   }
   if (interaction.commandName === "botgithub") {
-    try {
-      if (!interaction.guild) {
-        await interaction.reply({
-          content: `Thank you for being intrested in the bot! 
-[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
-[Support me!](https://ko-fi.com/lunarcatOwO)`,
-          ephemeral: true,
-        });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({
-          content: `Thank you for being intrested in the bot! 
-[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
-[Support me!](https://ko-fi.com/lunarcatOwO)`,
-          ephemeral: true,
-        });
-      } else {
-        await interaction.reply({
-          content: `Thank you for being intrested in the bot! 
-[Github](https://github.com/LunarcatOwO/iseal-discord-bot)
-[Support me!](https://ko-fi.com/lunarcatOwO)`,
-          ephemeral: true,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+    botgithub(interaction)
   }
 });
 
-client.on("interactionCreate", async (interaction) => {
+BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
   if (interaction.customId === "updateModal") {
@@ -1108,7 +255,7 @@ ID: ${interaction.user.id}`,
   }
 });
 
-client.on("threadCreate", async (thread) => {
+BOT.on("threadCreate", async (thread) => {
   try {
     await thread.join();
     const embed = new EmbedBuilder()
@@ -1133,14 +280,14 @@ client.on("threadCreate", async (thread) => {
   }
 });
 
-client.on("messageCreate", async (message) => {
+BOT.on("messageCreate", async (message) => {
   try {
-    if (message.mentions.has(client.user)) {
+    if (message.mentions.has(BOT.user)) {
       await message.reply(
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
       );
     }
-    if (message.channel.type === "DM" && message.author.id !== client.user.id) {
+    if (message.channel.type === "DM" && message.author.id !== BOT.user.id) {
       await message.reply(
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
       );
@@ -1150,7 +297,7 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-client.on("guildMemberAdd", async (member) => {
+BOT.on("guildMemberAdd", async (member) => {
   try {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
@@ -1170,4 +317,4 @@ client.on("guildMemberAdd", async (member) => {
   }
 });
 
-client.login(TOKEN);
+BOT.login(TOKEN);

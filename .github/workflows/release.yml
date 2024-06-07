@@ -30,4 +30,4 @@ jobs:
           tag_name: ${{ steps.package.outputs.version }}
           release_name: Main Release ${{ steps.package.outputs.version }}
           draft: false
-          prerelease: false
+          prerelease: true
