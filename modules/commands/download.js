@@ -22,7 +22,7 @@
 import { TRIGGER_ROLES } from "../../constants.js";
 import { getLatestReleaseAsset } from "../util/getreleaseasset.js";
 import { EmbedBuilder } from "discord.js";
-export async function download() {
+export async function download(interaction) {
 try {
     const PGdownloadLink = await getLatestReleaseAsset(
       "ISeal-plugin-developement",
