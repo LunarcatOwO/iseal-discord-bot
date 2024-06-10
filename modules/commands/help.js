@@ -28,7 +28,7 @@ export async function help(interaction) {
       .setTitle("**Commands**")
       .addFields(
         { name: "/help", value: "Shows this page", inline: true },
-        { name: "/modmail", value: "Sends an message to staff" },
+        { name: "/modmail", value: "Sends an message to staff", inline: true },
         {
           name: "/resourcepack",
           value: "Sends the resourcepack download links",
