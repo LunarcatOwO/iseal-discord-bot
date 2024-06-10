@@ -19,11 +19,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+import { BOT } from "../../main.js";
 import { resourcepackmessageID } from "../../constants.js";
 import { magicresourcepackmessageID } from "../../constants.js";
 export async function getResourcepack() {
   try {
-    const resourceChannel = await client.channels.cache.get(
+    const resourceChannel = await BOT.channels.cache.get(
       "1157658269318402058"
     );
     const resourcepackmessage = await resourceChannel.messages.fetch(
@@ -38,7 +39,7 @@ export async function getResourcepack() {
 }
 export async function getMagicResourcePack() {
   try {
-    const resourceChannel = await client.channels.cache.get(
+    const resourceChannel = await BOT.channels.cache.get(
       "1157658269318402058"
     );
     const magicresourcepackmessage = await resourceChannel.messages.fetch(
