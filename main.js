@@ -38,8 +38,6 @@ import {
   CLIENT_ID,
   TRIGGER_ROLES,
   modmailChannel,
-  resourcepackmessageID,
-  magicresourcepackmessageID,
   commands,
 } from "./constants.js";
 
@@ -90,40 +88,40 @@ BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "help") {
-    help(interaction);
+    await help(interaction);
   }
   if (interaction.commandName === "modmail") {
-    modmail(interaction);
+    await modmail(interaction);
   }
   if (
     interaction.commandName === "resourcepack" ||
     interaction.commandName === "rp"
   ) {
-   resourcepack(interaction)
+   await resourcepack(interaction)
   }
   if (interaction.commandName === "rules") {
-    rules(interaction);
+    await rules(interaction);
   }
   if (interaction.commandName === "config") {
-    config(interaction)
+    await config(interaction)
   }
   if (interaction.commandName === "wiki") {
-    wiki(interaction)
+    await wiki(interaction)
   }
   if (interaction.commandName === "download") {
-    download(interaction)
+    await download(interaction)
   }
   if (interaction.commandName === "downloadpre") {
-    downloadpre(interaction)
+    await downloadpre(interaction)
   }
   if (interaction.commandName === "update") {
-    update(interaction)
+    await update(interaction)
   }
   if (interaction.commandName === "format") {
-    format(interaction)
+    await format(interaction)
   }
   if (interaction.commandName === "botgithub") {
-    botgithub(interaction)
+    await botgithub(interaction)
   }
 });
 
