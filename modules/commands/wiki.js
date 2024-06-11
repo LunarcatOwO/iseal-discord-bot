@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 async function permissioncheck(interaction) {
-  hasRole = await getperms(interaction);
+  const hasRole = await getperms(interaction);
   if (hasRole) {
     await interaction.reply({ embeds: [embed] });
   } else {

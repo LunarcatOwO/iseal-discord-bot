@@ -55,7 +55,7 @@ export async function update(interaction) {
       await interaction.reply({ content: "What are you thinking..." });
       return;
     }
-    hasRole = await getperms(interaction);
+    const hasRole = await getperms(interaction);
     if (hasRole) {
       await interaction.showModal(modal);
     } else {

@@ -20,8 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { getperms } from "../util/permcheck.js";
-import { getResourcepack } from "../util/getpack.js";
-import { getMagicResourcePack } from "../util/getpack.js";
+import { getResourcepack , getMagicResourcePack } from "../util/getpack.js";
 import { EmbedBuilder } from "discord.js";
 export async function resourcepack(interaction) {
   try {
@@ -44,7 +43,7 @@ export async function resourcepack(interaction) {
       await interaction.reply({ embeds: [embed] });
       return;
     }
-    hasRole = await getperms(interaction);
+    const hasRole = await getperms(interaction);
     if (hasRole) {
       await interaction.reply({ embeds: [embed] });
     } else {

@@ -63,7 +63,7 @@ try {
       await interaction.reply({ embeds: [embed] });
       return;
     }
-    hasRole = await getperms(interaction);
+    const hasRole = await getperms(interaction);
     if (hasRole) {
       await interaction.reply({ embeds: [embed] });
     } else {
