@@ -10,7 +10,7 @@
   "main": "main.js",
   "scripts": {
     "start": "git pull && npm install && npm ci && node main.js",
-    "patch": "git restore . && git pull && npm install && npm ci",
+    "patchfiles": "git restore . && git pull && npm install && npm ci",
     "test": "echo There is no test function. Use \"npm start\" to start the bot."
   },
   "repository": {
