@@ -19,8 +19,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { TRIGGER_ROLES } from "../../constants.js";
+async function permissioncheck(interaction) {
+  hasRole = await getperms(interaction);
+  if (hasRole) {
+    await interaction.reply({ embeds: [embed] });
+  } else {
+    await interaction.reply({ embeds: [embed], ephemeral: true });
+  }
+}
 import { EmbedBuilder } from "discord.js";
+import { getperms } from "../util/permcheck.js";
 export async function wiki(interaction) {
   try {
     const subcommand = interaction.options.getSubcommand();
@@ -41,18 +49,7 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
+      await permissioncheck(interaction);
     }
     if (subcommand === "orepowers") {
       const embed = new EmbedBuilder()
@@ -69,18 +66,7 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
+      await permissioncheck(interaction);
     }
     if (subcommand === "valocraft") {
       const embed = new EmbedBuilder()
@@ -97,18 +83,7 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
+      await permissioncheck(interaction);
     }
     if (subcommand === "parkourproject") {
       const embed = new EmbedBuilder()
@@ -125,18 +100,7 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
+      await permissioncheck(interaction);
     }
   } catch (error) {
     console.error(error);

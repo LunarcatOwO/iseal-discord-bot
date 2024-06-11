@@ -20,7 +20,7 @@
 // SOFTWARE.
 import { getLatestPreReleaseAsset } from "../util/getreleaseasset.js";
 import { EmbedBuilder } from "discord.js";
-import { TRIGGER_ROLES } from "../../constants.js";
+import { getperms } from "../util/permcheck.js";
 export async function downloadpre(interaction) {
   try {
     const PGdownloadLink = await getLatestPreReleaseAsset(
@@ -43,13 +43,7 @@ export async function downloadpre(interaction) {
       await interaction.reply({ embeds: [embed] });
       return;
     }
-    const member =
-      interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = TRIGGER_ROLES;
-    const hasRole = member.roles.cache.some((role) =>
-      roleNamesToCheck.includes(role.name)
-    );
+    hasRole = await getperms(interaction);
     if (hasRole) {
       await interaction.reply({ embeds: [embed] });
     } else {

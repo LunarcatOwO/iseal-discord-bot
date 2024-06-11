@@ -19,8 +19,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { TRIGGER_ROLES } from "../../constants.js";
 import { EmbedBuilder } from "discord.js";
+import { getperms } from "../util/permcheck";
 export async function rules(interaction) {
 try {
     const embed = new EmbedBuilder()
@@ -63,13 +63,7 @@ try {
       await interaction.reply({ embeds: [embed] });
       return;
     }
-    const member =
-      interaction.member ||
-      (await interaction.guild.members.fetch(interaction.user.id));
-    const roleNamesToCheck = TRIGGER_ROLES;
-    const hasRole = member.roles.cache.some((role) =>
-      roleNamesToCheck.includes(role.name)
-    );
+    hasRole = await getperms(interaction);
     if (hasRole) {
       await interaction.reply({ embeds: [embed] });
     } else {

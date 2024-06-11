@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { EmbedBuilder } from "discord.js";
-import { TRIGGER_ROLES } from "../../constants.js";
+import { getperms } from "../util/permcheck";
 export async function format(interaction) {
   try {
     const subcommand = interaction.options.getSubcommand();
@@ -61,13 +61,7 @@ export async function format(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
+      hasRole = await getperms(interaction);
       if (hasRole) {
         await interaction.reply({ embeds: [embed] });
       } else {
