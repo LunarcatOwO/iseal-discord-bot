@@ -35,6 +35,8 @@ if (CLIENT_ID == "1232434697838133248") {
     "Client is not one of the branches, No AutoMail Channel will be set."
   );
 }
+export const ModMailCD = 60 //In minutes
+export const OWNER_ID = process.env.OWNER_ID;
 export const TRIGGER_ROLES = ["ISeal", "Community manager", "Staff"];
 export const resourcepackmessageID = "1193993805012140103";
 export const modmailChannel = modmailChannelcheck;

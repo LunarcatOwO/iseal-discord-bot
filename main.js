@@ -25,19 +25,12 @@ import {
   GatewayIntentBits,
   REST,
   Routes,
-  EmbedBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-  ActionRowBuilder,
-  CategoryChannel,
-  Collection,
+  Partials,
 } from "discord.js";
 // Loading the environment variables
 import {
   TOKEN,
   CLIENT_ID,
-  TRIGGER_ROLES,
-  modmailChannel,
   commands,
 } from "./constants.js";
 
@@ -64,12 +57,16 @@ export const BOT = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
   ],
+  partials: [
+    Partials.Channel,
+    Partials.Message,
+    Partials.GuildMembers,
+    Partials.Reaction,
+    Partials.GuildScheduledEvent,
+    Partials.ThreadMember,
+  ],
   allowedMentions: { parse: ["users", "roles", "everyone"] },
 });
-import {
-  getLatestReleaseAsset,
-  getLatestPreReleaseAsset,
-} from "./modules/util/getreleaseasset.js";
 BOT.on("ready", () => {
   console.log(`Logged in as ${BOT.user.tag}!`);
 });
@@ -87,169 +84,54 @@ import { botgithub } from "./modules/commands/botgithub.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "help") {
+  if (interaction.commandName == "help") {
     await help(interaction);
   }
-  if (interaction.commandName === "modmail") {
+  if (interaction.commandName == "modmail") {
     await modmail(interaction);
   }
   if (
-    interaction.commandName === "resourcepack" ||
-    interaction.commandName === "rp"
+    interaction.commandName == "resourcepack" ||
+    interaction.commandName == "rp"
   ) {
-   await resourcepack(interaction)
+    await resourcepack(interaction);
   }
-  if (interaction.commandName === "rules") {
+  if (interaction.commandName == "rules") {
     await rules(interaction);
   }
-  if (interaction.commandName === "config") {
-    await config(interaction)
+  if (interaction.commandName == "config") {
+    await config(interaction);
   }
-  if (interaction.commandName === "wiki") {
-    await wiki(interaction)
+  if (interaction.commandName == "wiki") {
+    await wiki(interaction);
   }
-  if (interaction.commandName === "download") {
-    await download(interaction)
+  if (interaction.commandName == "download") {
+    await download(interaction);
   }
-  if (interaction.commandName === "downloadpre") {
-    await downloadpre(interaction)
+  if (interaction.commandName == "downloadpre") {
+    await downloadpre(interaction);
   }
-  if (interaction.commandName === "update") {
-    await update(interaction)
+  if (interaction.commandName == "update") {
+    await update(interaction);
   }
-  if (interaction.commandName === "format") {
-    await format(interaction)
+  if (interaction.commandName == "format") {
+    await format(interaction);
   }
-  if (interaction.commandName === "botgithub") {
-    await botgithub(interaction)
+  if (interaction.commandName == "botgithub") {
+    await botgithub(interaction);
   }
 });
 
+import { updateModal } from "./modules/modals/update.js";
+import { modmailModal } from "./modules/modals/modmail.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
-  if (interaction.customId === "updateModal") {
-    try {
-      if (!interaction.guild) {
-        await interaction.reply({
-          content: "How did you even trigger this message... ",
-        });
-        return;
-      }
-      const pluginID = interaction.fields.getTextInputValue("pluginIDinput");
-      const version = interaction.fields.getTextInputValue("versionInfoInput");
-      const updateInfo =
-        interaction.fields.getTextInputValue("updateInfoInput");
-      let pluginName;
-      let roleid;
-      if (pluginID === "pg") {
-        pluginName = "PowerGems";
-        roleid = "1158015875744551003";
-      } else if (pluginID === "op") {
-        pluginName = "OrePowers";
-        roleid = "1185692151716270121";
-      } else if (pluginID === "vc") {
-        pluginName = "Valocraft";
-        roleid = "1201124609060245555";
-      } else if (pluginID === "pp") {
-        pluginName = "ParkourProject";
-        roleid = "1215399455835029504";
-      } else {
-        await interaction.reply({
-          content: "Invalid plugin ID",
-          ephemeral: true,
-        });
-        return;
-      }
-      const embed = new EmbedBuilder()
-        .setColor("#FFFF00")
-        .setTitle(`${pluginName} has updated to version ${version}`)
-        .setDescription(
-          `**What changed:**
-    ${updateInfo}`
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        })
-        .addFields({
-          name: "Download",
-          value: `[Click me to download the plugin](${await getLatestReleaseAsset(
-            "Iseal-plugin-developement",
-            pluginName
-          )})`,
-        });
-      if (!interaction.guild) {
-        await interaction.reply({ embeds: [embed] });
-        return;
-      }
-      const member =
-        interaction.member ||
-        (await interaction.guild.members.fetch(interaction.user.id));
-      const roleNamesToCheck = TRIGGER_ROLES;
-      const hasRole = member.roles.cache.some((role) =>
-        roleNamesToCheck.includes(role.name)
-      );
-      if (hasRole) {
-        await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
-      }
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+  if (interaction.customId == "updateModal") {
+    updateModal(interaction);
   }
-  if (interaction.customId === "modmailModal") {
-    try {
-      if (!interaction.guild) {
-        await interaction.reply({
-          content: "ummmm how. did you. trigger this.",
-        });
-        return;
-      }
-      const mailMessage = interaction.fields.getTextInputValue("mailMessage");
-      const channel = interaction.guild.channels.cache.get(modmailChannel);
-      const embed = new EmbedBuilder()
-        .setColor("#00ff00")
-        .setTitle(`New Modmail`)
-        .setDescription(`Information are the following:`)
-        .addFields(
-          {
-            name: "Content",
-            value: `${mailMessage}`,
-          },
-          {
-            name: "User who sent the message",
-            value: `Username: ${interaction.user.username}
-ID: ${interaction.user.id}`,
-          }
-        )
-        .setTimestamp()
-        .setFooter({
-          text: "Made with ❤️ by LunarcatOwO",
-          iconURL:
-            "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-        });
-      await channel.send({ embeds: [embed] });
-      await interaction.reply({
-        content: "Your message has been sent to the staff team!",
-        ephemeral: true,
-      });
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content:
-          "an error has occured, try again, if it doesnt work contact lunarcatowo",
-        ephemeral: true,
-      });
-    }
+  if (interaction.customId == "modmailModal") {
+    modmailModal(interaction);
   }
 });
 
@@ -285,7 +167,7 @@ BOT.on("messageCreate", async (message) => {
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
       );
     }
-    if (message.channel.type === "DM" && message.author.id !== BOT.user.id) {
+    if (message.channel.type == 1 && message.author.id !== BOT.user.id) {
       await message.reply(
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
       );

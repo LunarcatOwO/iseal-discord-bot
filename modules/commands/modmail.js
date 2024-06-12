@@ -19,9 +19,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { TextInputBuilder, ActionRowBuilder } from "discord.js";
-import { ModalBuilder } from "discord.js";
-import { Collection } from "discord.js";
+import { TextInputBuilder, ActionRowBuilder, ModalBuilder, Collection } from "discord.js";
+import { ModMailCD } from "../../constants.js";
 const cooldowns = new Collection();
 export async function modmail(interaction) {
   try {
@@ -33,7 +32,7 @@ export async function modmail(interaction) {
       return;
     }
     const now = Date.now();
-    const cooldownAmount = 1 * 1000 * 60 * 60;
+    const cooldownAmount = 1 * 1000 * 60 * ModMailCD;
     if (!cooldowns.has(interaction.user.id)) {
       cooldowns.set(interaction.user.id, now);
     } else {
