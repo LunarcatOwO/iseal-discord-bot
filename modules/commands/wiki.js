@@ -19,14 +19,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-async function permissioncheck(interaction) {
-  const hasRole = await getperms(interaction);
-  if (hasRole) {
-    await interaction.reply({ embeds: [embed] });
-  } else {
-    await interaction.reply({ embeds: [embed], ephemeral: true });
-  }
-}
 import { EmbedBuilder } from "discord.js";
 import { getperms } from "../util/permcheck.js";
 export async function wiki(interaction) {
@@ -49,7 +41,12 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      await permissioncheck(interaction);
+      const hasRole = await getperms(interaction);
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
     }
     if (subcommand === "orepowers") {
       const embed = new EmbedBuilder()
@@ -66,7 +63,12 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      await permissioncheck(interaction);
+      const hasRole = await getperms(interaction);
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
     }
     if (subcommand === "valocraft") {
       const embed = new EmbedBuilder()
@@ -83,7 +85,7 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      await permissioncheck(interaction);
+      await permissioncheck(interaction, embed);
     }
     if (subcommand === "parkourproject") {
       const embed = new EmbedBuilder()
@@ -100,7 +102,12 @@ export async function wiki(interaction) {
         await interaction.reply({ embeds: [embed] });
         return;
       }
-      await permissioncheck(interaction);
+      const hasRole = await getperms(interaction);
+      if (hasRole) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      }
     }
   } catch (error) {
     console.error(error);
