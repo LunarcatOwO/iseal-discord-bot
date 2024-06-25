@@ -26,6 +26,7 @@ import {
   REST,
   Routes,
   Partials,
+  EmbedBuilder
 } from "discord.js";
 // Loading the environment variables
 import {
