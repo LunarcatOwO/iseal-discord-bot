@@ -20,12 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { getperms } from "../util/permcheck.js";
-import { getResourcepack , getMagicResourcePack } from "../util/getpack.js";
+import { magicresourcepackattachmentURL, resourcepackattachmentURL } from "../../constants.js";
 import { EmbedBuilder } from "discord.js";
 export async function resourcepack(interaction) {
   try {
-    const resourcepackattachmentURL = await getResourcepack();
-    const magicresourcepackattachmentURL = await getMagicResourcePack();
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle("Resource Pack")

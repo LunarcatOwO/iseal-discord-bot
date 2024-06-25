@@ -24,6 +24,8 @@ config();
 let modmailChannelcheck = "0";
 export const TOKEN = process.env.TOKEN;
 export const CLIENT_ID = process.env.CLIENT_ID;
+export const magicresourcepackattachmentURL = "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/PowerGems_magic_pack.zip"
+export const resourcepackattachmentURL = "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/Powergems_Pack.zip"
 if (CLIENT_ID == "1232434697838133248") {
   console.log("Client is Develop Branch");
   modmailChannelcheck = "1203052237073416213";
