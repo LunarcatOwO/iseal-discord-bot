@@ -180,19 +180,7 @@ BOT.on("messageCreate", async (message) => {
 
 BOT.on("guildMemberAdd", async (member) => {
   try {
-    const embed = new EmbedBuilder()
-      .setColor("#0099ff")
-      .setTitle("Welcome to the server!")
-      .setDescription(
-        "Welcome to the server! if you are looking for the resource pack then run /resourcepack and it will automatically help you with that. Again welcome to the server and if you have any questions then just ask!"
-      )
-      .setTimestamp()
-      .setFooter({
-        text: "Made with ❤️ by LunarcatOwO",
-        iconURL:
-          "https://cdn.discordapp.com/avatars/905758994155589642/96f2fabc5e89d3e89a71aeda12f81a47?size=1024&f=.png",
-      });
-    await member.user.send({ content: "Hello!", embed: [embed] });
+    await member.user.send({ content: 'Hello and weelcome to ISeals Plugins Server! For the Powergems resourcepack run `/resourcepack` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970' });
   } catch (error) {
     console.error(`Could not send welcome DM to ${member.displayName}.`, error);
   }
