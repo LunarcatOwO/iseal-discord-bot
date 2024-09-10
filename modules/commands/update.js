@@ -42,6 +42,12 @@ export async function update(interaction) {
       .setLabel("Version of update")
       .setStyle(1)
       .setRequired(true);
+    const ping = new TextInputBuilder()
+      .setCustomId("ping")
+      .setLabel("Ping or no ping")
+      .setStyle(1)
+      .setMaxLength(1)
+      .setRequired(false);
     const secondActionRow = new ActionRowBuilder().addComponents(
       versionInfoInput
     );
@@ -49,8 +55,9 @@ export async function update(interaction) {
     const thirdActionRow = new ActionRowBuilder().addComponents(
       updateInfoInput
     );
+    const forthActionRow = new ActionRowBuilder().addComponents(ping);
 
-    modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
+    modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, forthActionRow);
     if (!interaction.guild) {
       await interaction.reply({ content: "What are you thinking..." });
       return;

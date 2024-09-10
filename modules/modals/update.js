@@ -33,6 +33,7 @@ export async function updateModal(interaction) {
     const pluginID = interaction.fields.getTextInputValue("pluginIDinput");
     const version = interaction.fields.getTextInputValue("versionInfoInput");
     const updateInfo = interaction.fields.getTextInputValue("updateInfoInput");
+    const pinginfo = interaction.fields.getTextInputValue("ping");
     let pluginName;
     let roleid;
     async function UpdateLink() {
@@ -42,7 +43,7 @@ export async function updateModal(interaction) {
         return await getLatestReleaseAsset(
           "Iseal-plugin-developement",
           pluginName
-        )
+        );
       }
     }
     if (pluginID == "pg") {
@@ -87,7 +88,17 @@ export async function updateModal(interaction) {
     }
     const hasRole = await getperms(interaction);
     if (hasRole) {
-      await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
+      if (pinginfo == "1") {
+        await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
+      } else if (pinginfo == "y") {
+        await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
+      } else if (pinginfo == "n") {
+        await interaction.reply({ embeds: [embed] });
+      } else if (pinginfo == "0") {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ content: `<@&${roleid}>`, embeds: [embed] });
+      }
     } else {
       await interaction.reply({ embeds: [embed], ephemeral: true });
     }
