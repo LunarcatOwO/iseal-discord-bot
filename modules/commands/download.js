@@ -24,10 +24,7 @@ import { EmbedBuilder } from "discord.js";
 import { getperms } from "../util/permcheck.js";
 export async function download(interaction) {
 try {
-    const PGdownloadLink = await getLatestReleaseAsset(
-      "ISeal-plugin-developement",
-      "PowerGems"
-    );
+    const PGdownloadLink = "https://modrinth.com/plugin/powergems";
     const OPdownloadLink = await getLatestReleaseAsset(
       "ISeal-plugin-developement",
       "OrePowers"

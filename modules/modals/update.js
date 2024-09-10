@@ -35,6 +35,16 @@ export async function updateModal(interaction) {
     const updateInfo = interaction.fields.getTextInputValue("updateInfoInput");
     let pluginName;
     let roleid;
+    async function UpdateLink() {
+      if (pluginID == "pg") {
+        return "https://modrinth.com/plugin/powergems";
+      } else {
+        return await getLatestReleaseAsset(
+          "Iseal-plugin-developement",
+          pluginName
+        )
+      }
+    }
     if (pluginID == "pg") {
       pluginName = "PowerGems";
       roleid = "1158015875744551003";
@@ -69,10 +79,7 @@ export async function updateModal(interaction) {
       })
       .addFields({
         name: "Download",
-        value: `[Click me to download the plugin](${await getLatestReleaseAsset(
-          "Iseal-plugin-developement",
-          pluginName
-        )})`,
+        value: `[Click me to download the plugin](${await UpdateLink()})`,
       });
     if (!interaction.guild) {
       await interaction.reply({ embeds: [embed] });
