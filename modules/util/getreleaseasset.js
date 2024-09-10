@@ -28,14 +28,7 @@ export async function getLatestReleaseAsset(owner, repo) {
     const asset = release.assets[0]; // Assuming you want the first asset
     downloadUrl = asset.browser_download_url;
     console.log(downloadUrl);
-    if (repo === "Powergems") {
-      console.log("Plugin is Powergems, giving modrinth download link...");
-      downloadUrl =
-        "https://modrinth.com/plugin/powergems";
-      return downloadUrl;
-    } else {
-      return downloadUrl
-    }
+    return downloadUrl
   } catch (error) {
     console.error("Error fetching release data:", error);
     console.log("Giving user Default spigot download link...");
