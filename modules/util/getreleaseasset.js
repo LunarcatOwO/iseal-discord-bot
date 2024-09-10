@@ -28,14 +28,20 @@ export async function getLatestReleaseAsset(owner, repo) {
     const asset = release.assets[0]; // Assuming you want the first asset
     const downloadUrl = asset.browser_download_url;
     console.log(downloadUrl);
-    return downloadUrl;
+    if (repo === "Powergems") {
+      console.log("Plugin is Powergems, giving modrinth download link...");
+      downloadUrl =
+        "https://modrinth.com/plugin/powergems";
+    } else {
+      return downloadUrl
+    }
   } catch (error) {
     console.error("Error fetching release data:", error);
     console.log("Giving user Default spigot download link...");
     let downloadUrl;
     if (repo === "Powergems") {
       downloadUrl =
-        "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
+        "https://modrinth.com/plugin/powergems";
     } else if (repo == "OrePowers") {
       downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
     } else if (repo == "Valocraft") {
