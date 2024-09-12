@@ -180,7 +180,7 @@ BOT.on("messageCreate", async (message) => {
 
 BOT.on("guildMemberAdd", async (member) => {
   try {
-    await member.user.send({ content: `Hello ${member.displayName} welcome to ISeals Plugins Server! For the Powergems resourcepack run /resourcepack in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970` });
+    await member.user.send({ content: `Hello ${member.displayName} welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970` });
   } catch (error) {
     console.error(`Could not send welcome DM to ${member.displayName}.`, error);
   }
