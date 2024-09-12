@@ -51,7 +51,10 @@ try {
           name: "5️⃣ Tone.",
           value:
             "Keep a friendly tone and try not to swear, a little is allowed, but dont exagerate",
-        }
+        },
+        {name: "6️⃣ No NSFW", value: "Any NSFW, either in vc or in a text chat will be severely punished, most likely with a permaban."},
+        {name: "7️⃣ Self-Advertising", value: "You must follow the channel rules and only do it in the https://discord.com/channels/1157645386480091156/1257573049251794995 channel"},
+        {name: "8️⃣ Be on the latest version", value: "**Zero support** will be given if you are not using the latest version of the plugin that supports your version and limited support will be given if it is not the latest absolute version"},
       )
       .setTimestamp()
       .setFooter({
