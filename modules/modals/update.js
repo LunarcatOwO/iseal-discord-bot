@@ -60,7 +60,7 @@ export async function updateModal(interaction) {
       roleid = "1215399455835029504";
     } else {
       await interaction.reply({
-        content: "Invalid plugin ID",
+        content: "Invalid plugin ID, are you acctrally a admin?",
         ephemeral: true,
       });
       return;
