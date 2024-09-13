@@ -41,7 +41,7 @@ if (CLIENT_ID == "1232434697838133248") {
 }
 export const ModMailCD = 60; //In minutes
 export const OWNER_ID = process.env.OWNER_ID;
-export const TRIGGER_ROLES = ["ISeal", "Community manager", "Staff"];
+export const TRIGGER_ROLES = ["ISeal", "Community Manager", "Staff"];
 export const resourcepackmessageID = "1193993805012140103";
 export const modmailChannel = modmailChannelcheck;
 export const magicresourcepackmessageID = "1194529976666570863";
