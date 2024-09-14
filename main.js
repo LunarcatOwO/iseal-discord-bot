@@ -26,14 +26,10 @@ import {
   REST,
   Routes,
   Partials,
-  EmbedBuilder
+  EmbedBuilder,
 } from "discord.js";
 // Loading the environment variables
-import {
-  TOKEN,
-  CLIENT_ID,
-  commands,
-} from "./constants.js";
+import { TOKEN, CLIENT_ID, commands, stickyMessageCD } from "./constants.js";
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -82,6 +78,7 @@ import { downloadpre } from "./modules/commands/downloadpre.js";
 import { update } from "./modules/commands/update.js";
 import { format } from "./modules/commands/format.js";
 import { botgithub } from "./modules/commands/botgithub.js";
+import { sleep } from "./modules/util/sleep.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -177,10 +174,46 @@ BOT.on("messageCreate", async (message) => {
     console.error(error);
   }
 });
+let stickyMessage = {
+  channelId: "1157659447976534087",
+  messageId: null,
+  content:
+    "### Read https://discord.com/channels/1157645386480091156/1157648526742913064 before asking for the resourcepack!",
+};
+let isStickyMessageRunning = false;
+async function handleStickyMessage(message, stickyMessage) {
+  if (isStickyMessageRunning) {
+    return;
+  }
 
+  isStickyMessageRunning = true;
+
+  try {
+    const stickyMsg = await message.channel.messages.fetch(stickyMessage.messageId);
+    await stickyMsg.delete();
+    const newStickyMsg = await message.channel.send(stickyMessage.content);
+    stickyMessage.messageId = newStickyMsg.id;
+  } catch (error) {
+    const newStickyMsg = await message.channel.send(stickyMessage.content);
+    stickyMessage.messageId = newStickyMsg.id;
+  }
+
+  await sleep(stickyMessageCD);
+  isStickyMessageRunning = false;
+}
+BOT.on("messageCreate", async (message) => {
+  if (message.author.bot) 
+    return;
+  else if (message.channel.id !== stickyMessage.channelId) 
+    return;
+  else
+    handleStickyMessage(message, stickyMessage)
+});
 BOT.on("guildMemberAdd", async (member) => {
   try {
-    await member.user.send({ content: `Hello ${member.displayName} welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970` });
+    await member.user.send({
+      content: `Hello ${member.displayName}, Welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970`,
+    });
   } catch (error) {
     console.error(`Could not send welcome DM to ${member.displayName}.`, error);
   }

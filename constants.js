@@ -40,6 +40,7 @@ if (CLIENT_ID == "1232434697838133248") {
   );
 }
 export const ModMailCD = 60; //In minutes
+export const stickyMessageCD = 10000000 //In milliseconds
 export const OWNER_ID = process.env.OWNER_ID;
 export const TRIGGER_ROLES = ["ISeal", "Community Manager", "Staff"];
 export const resourcepackmessageID = "1193993805012140103";
