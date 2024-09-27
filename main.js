@@ -178,7 +178,7 @@ let stickyMessage = {
   channelId: "1157659447976534087",
   messageId: null,
   content:
-    "## Read https://discord.com/channels/1157645386480091156/1157648526742913064 before asking for the resourcepack!",
+    "### Read https://discord.com/channels/1157645386480091156/1157648526742913064 before asking for the resourcepack!",
 };
 let isStickyMessageRunning = false;
 async function handleStickyMessage(message, stickyMessage) {
