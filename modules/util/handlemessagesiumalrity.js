@@ -24,17 +24,17 @@ export async function handlemessagesiumalrity(message) {
     for (let example of examples) {
         let similarity = stringSimilarity.compareTwoStrings(test, example.toLowerCase());
         if (similarity >= 1) {
-            message.reply(`Are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
+            message.reply(`<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
             overlySimilar = true;
             break;
         }
         if (similarity >= 0.7) {
-            message.reply(`Are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
+            message.reply(`<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
             foundHighSimilarity = true;
             break;
         }
         if (similarity >= 0.5) {
-            message.reply(`Are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
+            message.reply(`<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`);
             break;
         }
         else {

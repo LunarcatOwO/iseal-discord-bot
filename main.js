@@ -163,12 +163,12 @@ BOT.on("messageCreate", async (message) => {
     if (message.author.bot) return;
     if (message.mentions.has(BOT.user)) {
       await message.reply(
-        "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
+        `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
       );
     }
     if (message.channel.type == 1 && message.author.id !== BOT.user.id) {
       await message.reply(
-        "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
+        `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
       );
     }
     else
