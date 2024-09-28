@@ -160,6 +160,7 @@ BOT.on("threadCreate", async (thread) => {
 
 BOT.on("messageCreate", async (message) => {
   try {
+    if (message.author.bot) return;
     if (message.mentions.has(BOT.user)) {
       await message.reply(
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
@@ -170,6 +171,18 @@ BOT.on("messageCreate", async (message) => {
         "**I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **"
       );
     }
+    else
+      return;
+  } catch (error) {
+    console.error(error);
+  }
+});
+import { handlemessagesiumalrity } from "./modules/util/handlemessagesiumalrity.js";
+BOT.on("messageCreate", async (message) => {
+  try {
+    if (message.author.bot) return;
+    else
+      handlemessagesiumalrity(message);
   } catch (error) {
     console.error(error);
   }
