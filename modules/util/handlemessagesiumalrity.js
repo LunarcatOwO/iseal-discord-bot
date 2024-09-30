@@ -6,10 +6,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let foundHighSimilarity = false;
-let overlySimilar = false;
+
 export async function handlemessagesiumalrity(message) {
   try {
+    let foundHighSimilarity = false;
+    let overlySimilar = false;
     let text = message.content;
     let test = text.toLowerCase();
 
@@ -17,7 +18,7 @@ export async function handlemessagesiumalrity(message) {
 
     const examplesData = JSON.parse(fs.readFileSync(examplesFilePath, "utf8"));
     let examples = examplesData.examples;
-    
+
     for (let example of examples) {
       let similarity = stringSimilarity.compareTwoStrings(
         test,

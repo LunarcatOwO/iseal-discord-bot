@@ -181,8 +181,8 @@ import { handlemessagesiumalrity } from "./modules/util/handlemessagesiumalrity.
 BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
-    else
-      handlemessagesiumalrity(message);
+    if (message.channel.id !== "1157659447976534087") return;
+    handlemessagesiumalrity(message);
   } catch (error) {
     console.error(error);
   }
