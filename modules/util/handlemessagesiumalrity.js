@@ -45,12 +45,14 @@ export async function handlemessagesiumalrity(message) {
         console.log(`attempting to add new example: ${test}`);
         if (overlySimilar == true) {
             console.log(`Found exact same message: ${test} not adding to examples`);
+            return;
         }
         examples.push(test);
         fs.writeFileSync(examplesFilePath, JSON.stringify({ examples }, null, 2), 'utf8');
         console.log(`Added new example: ${test}`);
         foundHighSimilarity = false;
         overlySimilar = false;
+        return;
     }}catch (error) {
         console.error(error);
     }
