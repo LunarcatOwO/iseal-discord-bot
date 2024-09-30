@@ -17,28 +17,28 @@ export async function handlemessagesiumalrity(message) {
 
     const examplesData = JSON.parse(fs.readFileSync(examplesFilePath, "utf8"));
     let examples = examplesData.examples;
-
+    
     for (let example of examples) {
       let similarity = stringSimilarity.compareTwoStrings(
         test,
         example.toLowerCase()
       );
       if (similarity >= 1) {
-        message.reply(
+        await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
         );
         overlySimilar = true;
         break;
       }
       if (similarity >= 0.7) {
-        message.reply(
+        await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
         );
         foundHighSimilarity = true;
         break;
       }
       if (similarity >= 0.5) {
-        message.reply(
+        await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
         );
         break;
