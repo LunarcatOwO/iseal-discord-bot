@@ -49,6 +49,8 @@ export async function handlemessagesiumalrity(message) {
         examples.push(test);
         fs.writeFileSync(examplesFilePath, JSON.stringify({ examples }, null, 2), 'utf8');
         console.log(`Added new example: ${test}`);
+        foundHighSimilarity = false;
+        overlySimilar = false;
     }}catch (error) {
         console.error(error);
     }
