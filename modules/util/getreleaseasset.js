@@ -26,7 +26,7 @@ export async function getLatestReleaseAsset(owner, repo) {
     );
     const release = await response.json();
     const asset = release.assets[0]; // Assuming you want the first asset
-    downloadUrl = asset.browser_download_url;
+    let downloadUrl = asset.browser_download_url;
     console.log(downloadUrl);
     return downloadUrl
   } catch (error) {
