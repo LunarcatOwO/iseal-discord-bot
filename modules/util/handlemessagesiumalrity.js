@@ -27,7 +27,6 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 export async function handlemessagesiumalrity(message) {
   try {
     let foundHighSimilarity = false;
@@ -45,13 +44,6 @@ export async function handlemessagesiumalrity(message) {
         test,
         example.toLowerCase()
       );
-      if (similarity >= 1) {
-        await message.reply(
-          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
-        );
-        overlySimilar = true;
-        break;
-      }
       if (similarity >= 0.7) {
         await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
@@ -66,9 +58,19 @@ export async function handlemessagesiumalrity(message) {
         break;
       }
     }
-    if (foundHighSimilarity == true) {
+    if (foundHighSimilarity) {
       console.log(`attempting to add new example: ${test}`);
-      if (overlySimilar == true) {
+      for (let example of examples) {
+        let similarity = stringSimilarity.compareTwoStrings(
+          test,
+          example.toLowerCase()
+        );
+        if (similarity >= 1) {
+          overlySimilar = true;
+          break;
+        }
+      }
+      if (overlySimilar) {
         console.log(`Found exact same message: ${test} not adding to examples`);
         return;
       } else {
@@ -79,8 +81,6 @@ export async function handlemessagesiumalrity(message) {
           "utf8"
         );
         console.log(`Added new example: ${test}`);
-        foundHighSimilarity = false;
-        overlySimilar = false;
         return;
       }
     }
