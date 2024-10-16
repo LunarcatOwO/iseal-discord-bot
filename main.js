@@ -153,6 +153,15 @@ BOT.on("threadCreate", async (thread) => {
       content: "<@905758994155589642> <@398908171357519872>",
     });
     await thread.lastMessage.delete();
+    const tags = thread.appliedTags
+      .map((tagId) => {
+        const tag = thread.parent.availableTags.find((t) => t.id === tagId);
+        return tag ? tag.name : "Unknown Tag";
+      })
+      .join(", ");
+    console.log(
+      `Thread created: ${thread.name} with tags: ${tags}, parent: ${thread.parent.name}`
+    );
   } catch (error) {
     console.error(error);
   }
@@ -170,9 +179,7 @@ BOT.on("messageCreate", async (message) => {
       await message.reply(
         `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
       );
-    }
-    else
-      return;
+    } else return;
   } catch (error) {
     console.error(error);
   }
@@ -202,7 +209,9 @@ async function handleStickyMessage(message, stickyMessage) {
   isStickyMessageRunning = true;
 
   try {
-    const stickyMsg = await message.channel.messages.fetch(stickyMessage.messageId);
+    const stickyMsg = await message.channel.messages.fetch(
+      stickyMessage.messageId
+    );
     await stickyMsg.delete();
     const newStickyMsg = await message.channel.send(stickyMessage.content);
     stickyMessage.messageId = newStickyMsg.id;
@@ -215,12 +224,9 @@ async function handleStickyMessage(message, stickyMessage) {
   isStickyMessageRunning = false;
 }
 BOT.on("messageCreate", async (message) => {
-  if (message.author.bot) 
-    return;
-  else if (message.channel.id !== stickyMessage.channelId) 
-    return;
-  else
-    handleStickyMessage(message, stickyMessage)
+  if (message.author.bot) return;
+  else if (message.channel.id !== stickyMessage.channelId) return;
+  else handleStickyMessage(message, stickyMessage);
 });
 BOT.on("guildMemberAdd", async (member) => {
   try {
@@ -231,5 +237,4 @@ BOT.on("guildMemberAdd", async (member) => {
     console.error(`Could not send welcome DM to ${member.displayName}.`, error);
   }
 });
-
 BOT.login(TOKEN);
