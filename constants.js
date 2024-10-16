@@ -139,7 +139,7 @@ export const commands = [
     options: [
         {
             name: "query",
-            type: "STRING",
+            type: "3",
             description: "The song you want to play",
             required: true
         }
