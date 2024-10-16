@@ -182,7 +182,7 @@ BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
     if (message.channel.id !== "1157659447976534087") return;
-    handlemessagesiumalrity(message);
+    await handlemessagesiumalrity(message);
   } catch (error) {
     console.error(error);
   }
