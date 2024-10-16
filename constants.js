@@ -133,4 +133,28 @@ export const commands = [
     description:
       "Get the github link to the bot's code to report issues and give suggestions!",
   },
+  {
+    name: "play",
+    description: "Plays a song from youtube",
+    options: [
+        {
+            name: "query",
+            type: "STRING",
+            description: "The song you want to play",
+            required: true
+        }
+    ]
+},
+{
+    name: "skip",
+    description: "Skip to the current song"
+},
+{
+    name: "queue",
+    description: "See the queue"
+},
+{
+    name: "stop",
+    description: "Stop the player"
+},
 ];

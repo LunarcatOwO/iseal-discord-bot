@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "discord-player": "^6.7.1",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
