@@ -6,12 +6,14 @@
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
     "iseal-discord-bot": "file:",
+    "opusscript": "^0.0.8",
     "path": "^0.12.7",
-    "string-similarity": "^4.0.4"
+    "string-similarity": "^4.0.4",
+    "ytdl-core": "^4.11.5"
   },
   "name": "iseal-discord-bot",
   "description": "This bot was made for \"iseal\" on Discord to help with their Minecraft plugins. USE THE CODE AT YOUR OWN RISK; I'll not provide any support (and as stated in the LICENSE I'll also not provide any warranty). If you would like a custom one made by me, send me a friend request on Discord username \"LunarcatOwO\" and I'll get back to you as soon as I can!",
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-alpha.5",
   "main": "main.js",
   "scripts": {
     "start": "git pull && npm install && npm ci && node main.js",
