@@ -153,7 +153,7 @@ export async function adApprove(interaction) {
 
     // Send the original message to the approved ads channel
     await channel.send(originalMessage,{allowedMentions: { parse: [] }});
-    await channel.send(`Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `);
+    await channel.send(`Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `, {allowedMentions: { parse: [] }});
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
