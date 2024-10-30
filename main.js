@@ -79,6 +79,7 @@ import { update } from "./modules/commands/update.js";
 import { format } from "./modules/commands/format.js";
 import { botgithub } from "./modules/commands/botgithub.js";
 import { sleep } from "./modules/util/sleep.js";
+import { ad } from "./modules/commands/ad.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -118,10 +119,14 @@ BOT.on("interactionCreate", async (interaction) => {
   if (interaction.commandName == "botgithub") {
     await botgithub(interaction);
   }
+  if (interaction.commandName == "ad") {
+    await ad(interaction);
+  }
 });
 
 import { updateModal } from "./modules/modals/update.js";
 import { modmailModal } from "./modules/modals/modmail.js";
+import { adPendingModal, adApprove, adDeny  } from "./modules/modals/ad.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
@@ -130,6 +135,17 @@ BOT.on("interactionCreate", async (interaction) => {
   }
   if (interaction.customId == "modmailModal") {
     modmailModal(interaction);
+  }
+  if (interaction.customId == "ad") {
+    adPendingModal(interaction);}
+});
+BOT.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === 'AdApprove') {
+    await adApprove(interaction);
+  } else if (interaction.customId === 'AdDeny') {
+    await adDeny(interaction);
   }
 });
 
