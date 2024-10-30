@@ -28,23 +28,15 @@ export const magicresourcepackattachmentURL =
   "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/PowerGems_magic_pack.zip";
 export const resourcepackattachmentURL =
   "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/Powergems_Pack.zip";
-if (CLIENT_ID == "1232434697838133248") {
-  console.log("Client is Develop Branch");
-  modmailChannelcheck = "1203052237073416213";
-} else if (CLIENT_ID == "1202759951395586069") {
-  console.log("Client is Master Branch");
-  modmailChannelcheck = "1242816508145569792";
-} else {
-  console.log(
-    "Client is not one of the branches, No AutoMail Channel will be set."
-  );
-}
 export const ModMailCD = 60; //In minutes
-export const stickyMessageCD = 10000000 //In milliseconds
+export const adCD = 1440; //In minutes
+export const approvedAdsChannel = "1257573049251794995";
+export const stickyMessageCD = 10000000; //In milliseconds
 export const OWNER_ID = process.env.OWNER_ID;
 export const TRIGGER_ROLES = ["ISeal", "Community Manager", "Staff"];
 export const resourcepackmessageID = "1193993805012140103";
-export const modmailChannel = modmailChannelcheck;
+export const modmailChannel = "1242816508145569792";
+export const adPendingChannel = "1301012028026130493";
 export const magicresourcepackmessageID = "1194529976666570863";
 export const commands = [
   {
@@ -132,5 +124,10 @@ export const commands = [
     name: "botgithub",
     description:
       "Get the github link to the bot's code to report issues and give suggestions!",
+  },
+  {
+    name: "ad",
+    description:
+      "Send an advertisement, Will require approval from staff for it to show up in self-promo",
   },
 ];

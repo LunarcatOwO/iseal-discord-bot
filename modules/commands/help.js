@@ -72,6 +72,12 @@ export async function help(interaction) {
           inline: true,
         },
         {
+          name: "/ad",
+          value:
+            "Send an advertisement, Will require approval from staff for it to show up in self-promo",
+          inline: true,
+        },
+        {
           name: "/botgithub",
           value:
             "Get the github link to the bot's code to report issues and give suggestions!",
@@ -139,6 +145,12 @@ export async function help(interaction) {
           name: "/format <format_type>",
           value:
             "Get the format for a bug report or a suggestion, the avalible format types are: `bug`, `suggestion` and sends it publically in the channel",
+          inline: true,
+        },
+        {
+          name: "/ad",
+          value:
+            "Send an advertisement, Will require approval from staff for it to show up in self-promo, WHY ARE YOU USING THIS COMMAND? YOU ARE A STAFF MEMBER! 😂",
           inline: true,
         },
         {
