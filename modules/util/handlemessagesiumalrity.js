@@ -46,14 +46,14 @@ export async function handlemessagesiumalrity(message) {
       );
       if (similarity >= 0.7) {
         await message.reply(
-          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
+          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
         );
         foundHighSimilarity = true;
         break;
       }
       if (similarity >= 0.5) {
         await message.reply(
-          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1157648526742913064>`
+          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
         );
         break;
       }
