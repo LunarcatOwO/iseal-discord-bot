@@ -119,7 +119,7 @@ export async function adPendingModal(interaction) {
     });
   }
 }
-export async function adApprove(interaction) {
+export async function adApprove(interaction,BOT) {
   try {
     const messageMapPath = path.join(__dirname, 'messageMap.json');
     if (!interaction.guild) {
@@ -154,6 +154,11 @@ export async function adApprove(interaction) {
     // Send the original message to the approved ads channel
     await channel.send(originalMessage,{allowedMentions: { parse: [] }});
     await channel.send(`Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `, {allowedMentions: { parse: [] }});
+    try{const OriginalPoster = await BOT.users.fetch(userId);
+    await OriginalPoster.send(`Your advertisement has been approved and sent to the server.`, {allowedMentions: { parse: [] }});}
+    catch(error){
+      console.warn("User has DMs disabled");
+    }
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
@@ -171,7 +176,7 @@ export async function adApprove(interaction) {
     });
   }
 }
-export async function adDeny(interaction) {
+export async function adDeny(interaction,BOT) {
   try {
     if (!interaction.guild) {
       await interaction.reply({
@@ -201,10 +206,19 @@ export async function adDeny(interaction) {
       return;
     }
 
+    const { originalMessage, userId } = mapping;
+    try{
+    const OriginalPoster = await BOT.users.fetch(userId);
+    await OriginalPoster.send(`Your advertisement has been Denied.`, {allowedMentions: { parse: [] }});
+    await OriginalPoster.send(`Advertisement:\n${originalMessage}`, {allowedMentions: { parse: [] }});}
+    catch(error){
+      console.warn("User has DMs disabled");
+    }
+
     // Delete the mapping from messageMap
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
-
+    
     // Delete the pending advertisement message
     await interaction.message.delete();
     await interaction.reply({

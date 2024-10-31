@@ -143,9 +143,9 @@ BOT.on('interactionCreate', async (interaction) => {
   if (!interaction.isButton()) return;
 
   if (interaction.customId === 'AdApprove') {
-    await adApprove(interaction);
+    await adApprove(interaction,BOT);
   } else if (interaction.customId === 'AdDeny') {
-    await adDeny(interaction);
+    await adDeny(interaction,BOT);
   }
 });
 
