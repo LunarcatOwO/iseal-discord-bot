@@ -20,16 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { adPendingChannel, approvedAdsChannel } from "../../constants.js";
-import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from "discord.js";
+import {
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
+} from "discord.js";
 import { fileURLToPath } from "url";
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
+import { DM } from "../util/directmessage.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export async function adPendingModal(interaction) {
-  
   try {
-    const messageMapPath = path.join(__dirname, 'messageMap.json');
+    const messageMapPath = path.join(__dirname, "messageMap.json");
     if (!interaction.guild) {
       await interaction.reply({
         content: "ummmm how. did you. trigger this.",
@@ -71,29 +76,28 @@ export async function adPendingModal(interaction) {
       });
 
     const AdApprove = new ButtonBuilder()
-      .setCustomId('AdApprove')
-      .setLabel('Approve')
+      .setCustomId("AdApprove")
+      .setLabel("Approve")
       .setStyle(ButtonStyle.Success);
 
     const AdDeny = new ButtonBuilder()
-      .setCustomId('AdDeny')
-      .setLabel('Deny')
+      .setCustomId("AdDeny")
+      .setLabel("Deny")
       .setStyle(ButtonStyle.Danger);
 
-    const actionRow = new ActionRowBuilder()
-      .addComponents(AdApprove, AdDeny);
+    const actionRow = new ActionRowBuilder().addComponents(AdApprove, AdDeny);
 
     // Send the message and get the sent message object
     const sentMessage = await channel.send({
       embeds: [embed],
       components: [actionRow],
-      allowedMentions: { parse: [] } 
+      allowedMentions: { parse: [] },
     });
- 
+
     // Load existing mappings
     let messageMap = {};
     if (fs.existsSync(messageMapPath)) {
-      const data = fs.readFileSync(messageMapPath, 'utf8');
+      const data = fs.readFileSync(messageMapPath, "utf8");
       messageMap = JSON.parse(data);
     }
 
@@ -110,7 +114,6 @@ export async function adPendingModal(interaction) {
       content: "Your advertisement has been submitted for approval.",
       ephemeral: true,
     });
-
   } catch (error) {
     console.error(error);
     await interaction.reply({
@@ -119,9 +122,9 @@ export async function adPendingModal(interaction) {
     });
   }
 }
-export async function adApprove(interaction,BOT) {
+export async function adApprove(interaction, BOT) {
   try {
-    const messageMapPath = path.join(__dirname, 'messageMap.json');
+    const messageMapPath = path.join(__dirname, "messageMap.json");
     if (!interaction.guild) {
       await interaction.reply({
         content: "ummmm how. did you. trigger this.",
@@ -133,7 +136,7 @@ export async function adApprove(interaction,BOT) {
     // Load existing mappings
     let messageMap = {};
     if (fs.existsSync(messageMapPath)) {
-      const data = fs.readFileSync(messageMapPath, 'utf8');
+      const data = fs.readFileSync(messageMapPath, "utf8");
       messageMap = JSON.parse(data);
     }
 
@@ -152,13 +155,21 @@ export async function adApprove(interaction,BOT) {
     const channel = interaction.guild.channels.cache.get(approvedAdsChannel);
 
     // Send the original message to the approved ads channel
-    await channel.send(originalMessage,{allowedMentions: { parse: [] }});
-    await channel.send(`Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `, {allowedMentions: { parse: [] }});
-    try{const OriginalPoster = await BOT.users.fetch(userId);
-    await OriginalPoster.send(`Your advertisement has been approved and sent to the server.`, {allowedMentions: { parse: [] }});}
-    catch(error){
-      console.warn("User has DMs disabled");
-    }
+    await channel.send(originalMessage, { allowedMentions: { parse: [] } });
+    await channel.send(
+      `Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `,
+      { allowedMentions: { parse: [] } }
+    );
+    await DM(
+      BOT,
+      userId,
+      `Your advertisement has been approved and sent to the server.\nAdvertisement:\n${originalMessage}`
+    );
+    // try{const OriginalPoster = await BOT.users.fetch(userId);
+    // await OriginalPoster.send(`Your advertisement has been approved and sent to the server.`, {allowedMentions: { parse: [] }});}
+    // catch(error){
+    //   console.warn("User has DMs disabled");
+    // }
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
@@ -176,7 +187,7 @@ export async function adApprove(interaction,BOT) {
     });
   }
 }
-export async function adDeny(interaction,BOT) {
+export async function adDeny(interaction, BOT) {
   try {
     if (!interaction.guild) {
       await interaction.reply({
@@ -189,10 +200,10 @@ export async function adDeny(interaction,BOT) {
     const messageId = interaction.message.id;
 
     // Load existing mappings
-    const messageMapPath = path.join(__dirname, 'messageMap.json');
+    const messageMapPath = path.join(__dirname, "messageMap.json");
     let messageMap = {};
     if (fs.existsSync(messageMapPath)) {
-      const data = fs.readFileSync(messageMapPath, 'utf8');
+      const data = fs.readFileSync(messageMapPath, "utf8");
       messageMap = JSON.parse(data);
     }
 
@@ -207,18 +218,23 @@ export async function adDeny(interaction,BOT) {
     }
 
     const { originalMessage, userId } = mapping;
-    try{
-    const OriginalPoster = await BOT.users.fetch(userId);
-    await OriginalPoster.send(`Your advertisement has been Denied.`, {allowedMentions: { parse: [] }});
-    await OriginalPoster.send(`Advertisement:\n${originalMessage}`, {allowedMentions: { parse: [] }});}
-    catch(error){
-      console.warn("User has DMs disabled");
-    }
+    await DM(
+      BOT,
+      userId,
+      `Your advertisement has been Denied.\nAdvertisement:\n${originalMessage}`
+    );
+    // try{
+    // const OriginalPoster = await BOT.users.fetch(userId);
+    // await OriginalPoster.send(`Your advertisement has been Denied.`, {allowedMentions: { parse: [] }});
+    // await OriginalPoster.send(`Advertisement:\n${originalMessage}`, {allowedMentions: { parse: [] }});}
+    // catch(error){
+    //   console.warn("User has DMs disabled");
+    // }
 
     // Delete the mapping from messageMap
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
-    
+
     // Delete the pending advertisement message
     await interaction.message.delete();
     await interaction.reply({
@@ -231,4 +247,5 @@ export async function adDeny(interaction,BOT) {
       content: "An error has occurred, please try again later.",
       ephemeral: true,
     });
-  }}
+  }
+}
