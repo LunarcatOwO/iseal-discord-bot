@@ -34,7 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export async function adPendingModal(interaction) {
   try {
-    const messageMapPath = path.join(__dirname, "messageMap.json");
+    const messageMapPath = path.join(__dirname, "messagemap.json");
     if (!interaction.guild) {
       await interaction.reply({
         content: "ummmm how. did you. trigger this.",
@@ -124,7 +124,7 @@ export async function adPendingModal(interaction) {
 }
 export async function adApprove(interaction, BOT) {
   try {
-    const messageMapPath = path.join(__dirname, "messageMap.json");
+    const messageMapPath = path.join(__dirname, "messagemap.json");
     if (!interaction.guild) {
       await interaction.reply({
         content: "ummmm how. did you. trigger this.",
@@ -165,11 +165,6 @@ export async function adApprove(interaction, BOT) {
       userId,
       `Your advertisement has been approved and sent to the server.\nAdvertisement:\n${originalMessage}`
     );
-    // try{const OriginalPoster = await BOT.users.fetch(userId);
-    // await OriginalPoster.send(`Your advertisement has been approved and sent to the server.`, {allowedMentions: { parse: [] }});}
-    // catch(error){
-    //   console.warn("User has DMs disabled");
-    // }
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
@@ -200,7 +195,7 @@ export async function adDeny(interaction, BOT) {
     const messageId = interaction.message.id;
 
     // Load existing mappings
-    const messageMapPath = path.join(__dirname, "messageMap.json");
+    const messageMapPath = path.join(__dirname, "messagemap.json");
     let messageMap = {};
     if (fs.existsSync(messageMapPath)) {
       const data = fs.readFileSync(messageMapPath, "utf8");
@@ -223,14 +218,6 @@ export async function adDeny(interaction, BOT) {
       userId,
       `Your advertisement has been Denied.\nAdvertisement:\n${originalMessage}`
     );
-    // try{
-    // const OriginalPoster = await BOT.users.fetch(userId);
-    // await OriginalPoster.send(`Your advertisement has been Denied.`, {allowedMentions: { parse: [] }});
-    // await OriginalPoster.send(`Advertisement:\n${originalMessage}`, {allowedMentions: { parse: [] }});}
-    // catch(error){
-    //   console.warn("User has DMs disabled");
-    // }
-
     // Delete the mapping from messageMap
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
