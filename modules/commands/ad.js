@@ -59,6 +59,7 @@ export async function ad(interaction) {
       .setCustomId("ADMessage")
       .setLabel("Message for Advertisement")
       .setStyle(2)
+      .setMaxLength(1024)
       .setRequired(true);
     const firstActionRow = new ActionRowBuilder().addComponents(ADMessage);
     modal.addComponents(firstActionRow);
