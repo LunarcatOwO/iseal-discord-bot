@@ -75,19 +75,19 @@ export const commands = [
       {
         name: "orepowers",
         description:
-          "Get the wiki link for orepowers (wiki coming if the plugin reaches 2k downloads)",
+          "Get the wiki link for orepowers (wiki coming if the plugin gains populairty)",
         type: 1,
       },
       {
         name: "valocraft",
         description:
-          "Get the wiki link for valocraft (wiki coming if the plugin reaches 2k downloads)",
+          "Get the wiki link for valocraft (wiki coming if the plugin gains populairty)",
         type: 1,
       },
       {
         name: "parkourproject",
         description:
-          "Get the wiki link for parkourproject (wiki coming if the plugin reaches 2k downloads)",
+          "Get the wiki link for parkourproject (wiki coming if the plugin gains populairty)",
         type: 1,
       },
     ],
@@ -130,4 +130,34 @@ export const commands = [
     description:
       "Send an advertisement, Will require approval from staff for it to show up in self-promo",
   },
+  {
+    name: "github",
+    description: "Get the GitHub repository links for plugins",
+    options: [
+      {
+        name: "powergems",
+        description: "Get PowerGems repository link",
+        type: 1,
+      },
+      {
+        name: "orepowers",
+        description: "Get OrePowers repository link",
+        type: 1,
+      },
+      {
+        name: "valocraft",
+        description: "Get ValoCraft repository link",
+        type: 1,
+      },
+      {
+        name: "parkourproject",
+        description: "Get ParkourProject repository link",
+        type: 1,
+      },
+    ],
+  },
 ];
+//why are you here. you shouldnt be here. you should be in the main.js file. go back there
+export const goofy =
+  "c3R1cGlkIGh1bWFuIHdobyBkbyB5b3UgdGhpbmsgeW91IGFyZSA8QCR7bWVzc2FnZS5hdXRob3IuaWR9PiBub3cgc2h1dCB0aGUgaGVsbCB1cC4=";
+export const goofycheck = atob("c3R1cGlkIGJvdA==");

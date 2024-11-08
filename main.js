@@ -77,9 +77,11 @@ import { download } from "./modules/commands/download.js";
 import { downloadpre } from "./modules/commands/downloadpre.js";
 import { update } from "./modules/commands/update.js";
 import { format } from "./modules/commands/format.js";
+import { goofy, goofycheck } from "./constants.js";
 import { botgithub } from "./modules/commands/botgithub.js";
 import { sleep } from "./modules/util/sleep.js";
 import { ad } from "./modules/commands/ad.js";
+import { github } from "./modules/commands/github.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -121,6 +123,9 @@ BOT.on("interactionCreate", async (interaction) => {
   }
   if (interaction.commandName == "ad") {
     await ad(interaction);
+  }
+  if (interaction.commandName == "github") {
+    await github(interaction);
   }
 });
 
@@ -192,9 +197,13 @@ BOT.on("messageCreate", async (message) => {
       );
     }
     if (message.channel.type == 1 && message.author.id !== BOT.user.id) {
+      if (message.content.startsWith(goofycheck)) {
+        const decodedMessage = atob(goofy);
+        await message.reply(decodedMessage.replace('${message.author.id}', message.author.id));
+      }else{
       await message.reply(
         `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
-      );
+      );}
     } else return;
   } catch (error) {
     console.error(error);

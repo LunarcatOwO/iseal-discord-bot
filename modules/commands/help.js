@@ -78,6 +78,11 @@ export async function help(interaction) {
           inline: true,
         },
         {
+          name: "/github",
+          value: "Get the github link for the selected plugin",
+          inline: true,
+        },
+        {
           name: "/botgithub",
           value:
             "Get the github link to the bot's code to report issues and give suggestions!",
@@ -151,6 +156,11 @@ export async function help(interaction) {
           name: "/ad",
           value:
             "Send an advertisement, Will require approval from staff for it to show up in self-promo, WHY ARE YOU USING THIS COMMAND? YOU ARE A STAFF MEMBER! 😂",
+          inline: true,
+        },
+        {
+          name: "/github",
+          value: "Get the github link for the selected plugin and sends it publically in the channel",
           inline: true,
         },
         {
