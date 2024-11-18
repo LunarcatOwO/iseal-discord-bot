@@ -27,7 +27,7 @@ export async function github(interaction) {
     if (subcommand === "powergems") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
-        .setTitle("Link to PowerGems wiki")
+        .setTitle("Link to PowerGems github")
         .setTimestamp()
         .setDescription(
           "[Click me](https://github.com/ISeal-plugin-developement/PowerGems) for Powergems Github"
@@ -51,7 +51,7 @@ export async function github(interaction) {
     if (subcommand === "orepowers") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
-        .setTitle("Link to OrePowers wiki")
+        .setTitle("Link to OrePowers github")
         .setDescription("[Click me](https://github.com/ISeal-plugin-developement/OrePowers) for OrePowers Github (You will not be able to access this.)")
         .setTimestamp()
         .setFooter({
@@ -73,7 +73,7 @@ export async function github(interaction) {
     if (subcommand === "valocraft") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
-        .setTitle("Link to Valocraft wiki")
+        .setTitle("Link to Valocraft github")
         .setDescription("[Click me](https://github.com/ISeal-plugin-developement/ValoCraft) for Valocraft Github (You will not be able to access this.)")
         .setTimestamp()
         .setFooter({
@@ -90,7 +90,7 @@ export async function github(interaction) {
     if (subcommand === "parkourproject") {
       const embed = new EmbedBuilder()
         .setColor("#0099ff")
-        .setTitle("Link to ParkourProject wiki")
+        .setTitle("Link to ParkourProject github")
         .setDescription("[Click me](https://github.com/ISeal-plugin-developement/ParkourProject) for ParkourProject Github (You will not be able to access this.)")
         .setTimestamp()
         .setFooter({
