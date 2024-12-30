@@ -175,11 +175,13 @@ export async function adApprove(interaction, BOT) {
     });
     await interaction.message.delete();
   } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "An error has occurred, please try again later.",
-      ephemeral: true,
-    });
+    console.log(error);
+    try {
+      await interaction.reply({
+        content: "An error has occurred, please try again later.",
+        ephemeral: true,
+      });
+    } catch (error) { console.log(error) }
   }
 }
 export async function adDeny(interaction, BOT) {
@@ -229,10 +231,12 @@ export async function adDeny(interaction, BOT) {
       ephemeral: true,
     });
   } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "An error has occurred, please try again later.",
-      ephemeral: true,
-    });
+    console.log(error);
+    try {
+      await interaction.reply({
+        content: "An error has occurred, please try again later.",
+        ephemeral: true,
+      });
+    } catch (error) { console.log(error) }
   }
 }
