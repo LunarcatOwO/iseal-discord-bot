@@ -27,7 +27,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export async function handlemessagesiumalrity(message) {
+export async function handleMessageSimilarity(message) {
   try {
     let foundHighSimilarity = false;
     let overlySimilar = false;
@@ -51,7 +51,7 @@ export async function handlemessagesiumalrity(message) {
         foundHighSimilarity = true;
         break;
       }
-      if (similarity >= 0.5 && !foundHighSimilarity) {
+      if (similarity >= 0.5 && foundHighSimilarity == false) {
         await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
         );

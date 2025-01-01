@@ -69,25 +69,25 @@ export const commands = [
     options: [
       {
         name: "powergems",
-        description: "Get the wiki link for powergems",
+        description: "Get the wiki link for PowerGems",
         type: 1,
       },
       {
         name: "orepowers",
         description:
-          "Get the wiki link for orepowers (wiki coming if the plugin gains populairty)",
+          "Get the wiki link for OrePowers (wiki coming if the plugin gains popularity)",
         type: 1,
       },
       {
         name: "valocraft",
         description:
-          "Get the wiki link for valocraft (wiki coming if the plugin gains populairty)",
+          "Get the wiki link for ValoCraft (wiki coming if the plugin gains popularity)",
         type: 1,
       },
       {
         name: "parkourproject",
         description:
-          "Get the wiki link for parkourproject (wiki coming if the plugin gains populairty)",
+          "Get the wiki link for ParkourProject (wiki coming if the plugin gains popularity)",
         type: 1,
       },
     ],

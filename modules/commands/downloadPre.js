@@ -18,10 +18,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { getLatestPreReleaseAsset } from "../util/getreleaseasset.js";
+import { getLatestPreReleaseAsset } from "../util/GetReleaseAsset.js";
 import { EmbedBuilder } from "discord.js";
-import { getperms } from "../util/permcheck.js";
-export async function downloadpre(interaction) {
+import { getperms } from "../util/PermissionChecker.js";
+export async function downloadPre(interaction) {
   try {
     const PGdownloadLink = await getLatestPreReleaseAsset(
       "ISeal-plugin-developement",

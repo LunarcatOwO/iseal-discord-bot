@@ -21,10 +21,10 @@
 // SOFTWARE.
 
 export async function DM(BOT, userID, content) {
+  const user = await BOT.users.fetch(userID);
   try {
-    const user = await BOT.users.fetch(userID);
     await user.send(content);
   } catch (error) {
-    console.error("User Has Dm disabled");
+    console.error("User "+user.name+", id "+userID+" has DMs disabled");
   }
 }
