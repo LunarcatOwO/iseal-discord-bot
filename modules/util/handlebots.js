@@ -34,11 +34,10 @@ export async function handlebots(message) {
     if (guild.id !== "1157645386480091156") return;
     const channel = message.guild.channels.cache.get(modmailChannel);
     if (message.channel.type == 1) {
-        console.log(
+        channel.send(
           "Bot who dmed the bot is: " +
             message.author.id +
-            " and the bot is: " +
-            message.author.bot
+            " and the message is: " + message.content
         );
         return;
       }
