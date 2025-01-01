@@ -68,19 +68,19 @@ BOT.on("ready", () => {
   console.log(`Logged in as ${BOT.user.tag}!`);
 });
 import { help } from "./modules/commands/Help.js";
-import { modmail } from "./modules/commands/Modmail.js";
-import { resourcepack } from "./modules/commands/Resourcepack.js";
+import { modmail } from "./modules/commands/modMail.js";
+import { resourcePack } from "./modules/commands/resourcePack.js";
 import { rules } from "./modules/commands/Rules.js";
 import { config } from "./modules/commands/Config.js";
 import { wiki } from "./modules/commands/Wiki.js";
 import { download } from "./modules/commands/Download.js";
 import { downloadPre } from "./modules/commands/DownloadPre.js";
-import { update } from "./modules/commands/Update.js";
+import { update } from "./modules/commands/update.js";
 import { format } from "./modules/commands/Format.js";
 import { goofy, goofycheck } from "./constants.js";
 import { botGithub } from "./modules/commands/BotGithub.js";
 import { sleep } from "./modules/util/Sleep.js";
-import { ad } from "./modules/commands/Ad.js";
+import { ad } from "./modules/commands/ad.js";
 import { github } from "./modules/commands/Github.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -95,7 +95,7 @@ BOT.on("interactionCreate", async (interaction) => {
     interaction.commandName == "resourcepack" ||
     interaction.commandName == "rp"
   ) {
-    await resourcepack(interaction);
+    await resourcePack(interaction);
   }
   if (interaction.commandName == "rules") {
     await rules(interaction);
@@ -229,7 +229,7 @@ let stickyMessage = {
   channelId: "1157659447976534087",
   messageId: null,
   content:
-    "### Read https://discord.com/channels/1157645386480091156/1296440139504943131 before asking for the resourcepack!",
+    "### Read https://discord.com/channels/1157645386480091156/1296440139504943131 before asking for the resourcePack!",
 };
 let isStickyMessageRunning = false;
 async function handleStickyMessage(message, stickyMessage) {

@@ -55,7 +55,11 @@ try {
         {name: "6️⃣ No NSFW", value: "Any NSFW, either in vc or in a text chat will be severely punished, most likely with a permaban."},
         {name: "7️⃣ Self-Advertising", value: "You must follow the channel rules and only do it in the https://discord.com/channels/1157645386480091156/1257573049251794995 channel"},
         {name: "8️⃣ Be on the latest version", value: "**Zero support** will be given if you are not using the latest version of the plugin that supports your version and limited support will be given if it is not the latest absolute version"},
-      )
+          {name: "9️️ Use common sense.", value: "Just because it's not listed here it doesn't mean it's allowed. This means:\n" +
+            "No \"my little brother was chatting\" or \"i got hacked\". You have to take responsibility over the security of your discord account\n" +
+                    "No \"i didnt know what nsfw meant\" or similar. If you don't recognize a term use a translator or a dictionary.\n" +
+                    "No \"well theoretically i am not doing anything against the rules\" when you know for a fact its not intended to be done."}
+          )
       .setTimestamp()
       .setFooter({
         text: "Made with ❤️ by LunarcatOwO",

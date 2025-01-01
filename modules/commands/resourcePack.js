@@ -22,7 +22,7 @@
 import { getperms } from "../util/PermissionChecker.js";
 import { magicresourcepackattachmentURL, resourcepackattachmentURL } from "../../constants.js";
 import { EmbedBuilder } from "discord.js";
-export async function resourcepack(interaction) {
+export async function resourcePack(interaction) {
   try {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
