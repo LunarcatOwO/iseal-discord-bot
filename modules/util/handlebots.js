@@ -33,14 +33,15 @@ export async function handlebots(message) {
   try {
     if (guild.id !== "1157645386480091156") return;
     const channel = message.guild.channels.cache.get(modmailChannel);
-    if (message.channel.type == 1) {
+    if (message.channel.type == 1 && message.author.id !== "1202759951395586069") {
         channel.send(
           "Bot who dmed the bot is: " +
             message.author.id +
-            " and the message is: " + message.content
+            " and the message is: " +
+            message.content
         );
         return;
-      }
+    }
     let whitelistedBot = false;
     const whitelistFile = path.resolve(__dirname, "botwhitelist.json");
     const whitelistData = JSON.parse(fs.readFileSync(whitelistFile, "utf8"));

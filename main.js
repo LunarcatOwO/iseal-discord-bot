@@ -29,7 +29,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 // Loading the environment variables
-import { TOKEN, CLIENT_ID, commands, stickyMessageCD } from "./constants.js";
+import { TOKEN, CLIENT_ID, commands, stickyMessageCD, goofy, goofycheck } from "./constants.js";
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -77,7 +77,6 @@ import { download } from "./modules/commands/download.js";
 import { downloadpre } from "./modules/commands/downloadpre.js";
 import { update } from "./modules/commands/update.js";
 import { format } from "./modules/commands/format.js";
-import { goofy, goofycheck } from "./constants.js";
 import { botgithub } from "./modules/commands/botgithub.js";
 import { sleep } from "./modules/util/sleep.js";
 import { ad } from "./modules/commands/ad.js";

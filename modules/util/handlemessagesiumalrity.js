@@ -51,7 +51,7 @@ export async function handlemessagesiumalrity(message) {
         foundHighSimilarity = true;
         break;
       }
-      if (similarity >= 0.5 && foundHighSimilarity == false) {
+      if (similarity >= 0.5 && !foundHighSimilarity) {
         await message.reply(
           `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
         );
