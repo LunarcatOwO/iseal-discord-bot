@@ -11,6 +11,7 @@
 
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
+
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -18,38 +19,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { getperms } from "../util/permcheck.js";
 import { EmbedBuilder } from "discord.js";
-export async function config(interaction) {
+import { getperms } from "../util/PermissionChecker.js";
+export async function rules(interaction) {
 try {
     const embed = new EmbedBuilder()
-      .setColor("#0099ff")
-      .setTitle("How to access the config file")
-      .setDescription(
-        "Follow the following steps if you do not know how to access the config file"
-      )
+      .setColor("#00ff00")
+      .setTitle("Rules for the server")
+      .setDescription("Read the following carefully!")
       .addFields(
         {
-          name: "Step 1",
-          value: "Go to your server's file manager",
-          inline: true,
+          name: "1️⃣ Spam!",
+          value: "Please dont spam. Nobody likes it and you will get muted.",
         },
         {
-          name: "Step 2",
-          value: "Open the `~/plugins` folder",
-          inline: true,
-        },
-        {
-          name: "Step 3",
+          name: "2️⃣ Help us to help you!",
           value:
-            "Open the folder with the plugin's name. example of the route: `~/plugins/PowerGems`",
-          inline: true,
+            'If you are reporting a bug/issue, please give plenty of information. Simply just saying "Help" isn\'t very useful.',
         },
         {
-          name: "Step 4",
-          value: "Open the `config.yml` file",
-          inline: true,
-        }
+          name: "3️⃣ We have tickets!",
+          value:
+            "To get individual support, you can open a ticket in the <#1157666504461000714> channel.",
+        },
+        {
+          name: "4️⃣ Patience",
+          value:
+            "When asking for help, please be patient. We will get to you as soon as possible, but we all have a life too. (I know, shocking)",
+        },
+        {
+          name: "5️⃣ Tone.",
+          value:
+            "Keep a friendly tone and try not to swear, a little is allowed, but dont exagerate",
+        },
+        {name: "6️⃣ No NSFW", value: "Any NSFW, either in vc or in a text chat will be severely punished, most likely with a permaban."},
+        {name: "7️⃣ Self-Advertising", value: "You must follow the channel rules and only do it in the https://discord.com/channels/1157645386480091156/1257573049251794995 channel"},
+        {name: "8️⃣ Be on the latest version", value: "**Zero support** will be given if you are not using the latest version of the plugin that supports your version and limited support will be given if it is not the latest absolute version"},
       )
       .setTimestamp()
       .setFooter({

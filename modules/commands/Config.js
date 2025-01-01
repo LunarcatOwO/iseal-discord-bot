@@ -18,20 +18,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { getLatestPreReleaseAsset } from "../util/getreleaseasset.js";
+import { getperms } from "../util/PermissionChecker.js";
 import { EmbedBuilder } from "discord.js";
-import { getperms } from "../util/permcheck.js";
-export async function downloadpre(interaction) {
-  try {
-    const PGdownloadLink = await getLatestPreReleaseAsset(
-      "ISeal-plugin-developement",
-      "PowerGems"
-    );
+export async function config(interaction) {
+try {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
-      .setTitle("Download Link for the plugins!")
+      .setTitle("How to access the config file")
       .setDescription(
-        `[Click me to download PowerGems Pre-Release](${PGdownloadLink})`
+        "Follow the following steps if you do not know how to access the config file"
+      )
+      .addFields(
+        {
+          name: "Step 1",
+          value: "Go to your server's file manager",
+          inline: true,
+        },
+        {
+          name: "Step 2",
+          value: "Open the `~/plugins` folder",
+          inline: true,
+        },
+        {
+          name: "Step 3",
+          value:
+            "Open the folder with the plugin's name. example of the route: `~/plugins/PowerGems`",
+          inline: true,
+        },
+        {
+          name: "Step 4",
+          value: "Open the `config.yml` file",
+          inline: true,
+        }
       )
       .setTimestamp()
       .setFooter({

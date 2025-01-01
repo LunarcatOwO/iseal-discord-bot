@@ -11,7 +11,6 @@
 
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,17 +18,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { getperms } from "../util/permcheck.js";
-import { magicresourcepackattachmentURL, resourcepackattachmentURL } from "../../constants.js";
+import { getLatestPreReleaseAsset } from "../util/GetReleaseAsset.js";
 import { EmbedBuilder } from "discord.js";
-export async function resourcepack(interaction) {
+import { getperms } from "../util/PermissionChecker.js";
+export async function downloadPre(interaction) {
   try {
+    const PGdownloadLink = await getLatestPreReleaseAsset(
+      "ISeal-plugin-developement",
+      "PowerGems"
+    );
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
-      .setTitle("Resource Pack")
+      .setTitle("Download Link for the plugins!")
       .setDescription(
-        `[Click me to download the default resourcepack for PowerGems](${resourcepackattachmentURL})
-[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})`
+        `[Click me to download PowerGems Pre-Release](${PGdownloadLink})`
       )
       .setTimestamp()
       .setFooter({

@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { ModalBuilder, TextInputBuilder, ActionRowBuilder } from "discord.js";
-import { getperms } from "../util/permcheck.js";
+import { getperms } from "../util/PermissionChecker.js";
 export async function update(interaction) {
   try {
     const modal = new ModalBuilder()

@@ -29,7 +29,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 // Loading the environment variables
-import { TOKEN, CLIENT_ID, commands, stickyMessageCD, goofy, goofycheck } from "./constants.js";
+import { TOKEN, CLIENT_ID, commands, stickyMessageCD } from "./constants.js";
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -67,20 +67,21 @@ export const BOT = new Client({
 BOT.on("ready", () => {
   console.log(`Logged in as ${BOT.user.tag}!`);
 });
-import { help } from "./modules/commands/help.js";
-import { modmail } from "./modules/commands/modmail.js";
-import { resourcepack } from "./modules/commands/resourcepack.js";
-import { rules } from "./modules/commands/rules.js";
-import { config } from "./modules/commands/config.js";
-import { wiki } from "./modules/commands/wiki.js";
-import { download } from "./modules/commands/download.js";
-import { downloadpre } from "./modules/commands/downloadpre.js";
-import { update } from "./modules/commands/update.js";
-import { format } from "./modules/commands/format.js";
-import { botgithub } from "./modules/commands/botgithub.js";
-import { sleep } from "./modules/util/sleep.js";
-import { ad } from "./modules/commands/ad.js";
-import { github } from "./modules/commands/github.js";
+import { help } from "./modules/commands/Help.js";
+import { modmail } from "./modules/commands/Modmail.js";
+import { resourcepack } from "./modules/commands/Resourcepack.js";
+import { rules } from "./modules/commands/Rules.js";
+import { config } from "./modules/commands/Config.js";
+import { wiki } from "./modules/commands/Wiki.js";
+import { download } from "./modules/commands/Download.js";
+import { downloadPre } from "./modules/commands/DownloadPre.js";
+import { update } from "./modules/commands/Update.js";
+import { format } from "./modules/commands/Format.js";
+import { goofy, goofycheck } from "./constants.js";
+import { botGithub } from "./modules/commands/BotGithub.js";
+import { sleep } from "./modules/util/Sleep.js";
+import { ad } from "./modules/commands/Ad.js";
+import { github } from "./modules/commands/Github.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -109,7 +110,7 @@ BOT.on("interactionCreate", async (interaction) => {
     await download(interaction);
   }
   if (interaction.commandName == "downloadpre") {
-    await downloadpre(interaction);
+    await downloadPre(interaction);
   }
   if (interaction.commandName == "update") {
     await update(interaction);
@@ -118,7 +119,7 @@ BOT.on("interactionCreate", async (interaction) => {
     await format(interaction);
   }
   if (interaction.commandName == "botgithub") {
-    await botgithub(interaction);
+    await botGithub(interaction);
   }
   if (interaction.commandName == "ad") {
     await ad(interaction);
@@ -128,9 +129,9 @@ BOT.on("interactionCreate", async (interaction) => {
   }
 });
 
-import { updateModal } from "./modules/modals/update.js";
-import { modmailModal } from "./modules/modals/modmail.js";
-import { adPendingModal, adApprove, adDeny } from "./modules/modals/ad.js";
+import { updateModal } from "./modules/modals/Update.js";
+import { modmailModal } from "./modules/modals/Modmail.js";
+import { adPendingModal, adApprove, adDeny } from "./modules/modals/Ad.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
@@ -212,14 +213,14 @@ BOT.on("messageCreate", async (message) => {
     console.error(error);
   }
 });
-import { handlemessagesiumalrity } from "./modules/util/handlemessagesiumalrity.js";
-import { DM } from "./modules/util/directmessage.js";
-import { handlebots } from "./modules/util/handlebots.js";
+import { handleMessageSimilarity } from "./modules/util/HandleMessageSimilarity.js";
+import { DM } from "./modules/util/DirectMessage.js";
+import { handleBots } from "./modules/util/HandleBots.js";
 BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
     if (message.channel.id !== "1157659447976534087") return;
-    await handlemessagesiumalrity(message);
+    await handleMessageSimilarity(message);
   } catch (error) {
     console.error(error);
   }
@@ -260,7 +261,15 @@ BOT.on("messageCreate", async (message) => {
 });
 BOT.on("messageCreate", async (message) => {
   if (!message.author.bot) return;
-  else handlebots(message);
+  if (message.channel.type == 1) {
+    console.log(
+      "Bot who dmed the bot is: " +
+        message.author.id +
+        " and the bot is: " +
+        message.author.bot
+    );
+    return;
+  } else handleBots(message);
 });
 BOT.on("guildMemberAdd", async (member) => {
   await DM(

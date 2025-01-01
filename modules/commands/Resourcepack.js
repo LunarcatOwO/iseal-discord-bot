@@ -19,32 +19,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { getLatestReleaseAsset } from "../util/getreleaseasset.js";
+import { getperms } from "../util/PermissionChecker.js";
+import { magicresourcepackattachmentURL, resourcepackattachmentURL } from "../../constants.js";
 import { EmbedBuilder } from "discord.js";
-import { getperms } from "../util/permcheck.js";
-export async function download(interaction) {
-try {
-    const PGdownloadLink = "https://modrinth.com/plugin/powergems";
-    const OPdownloadLink = await getLatestReleaseAsset(
-      "ISeal-plugin-developement",
-      "OrePowers"
-    );
-    const VCdownloadLink = await getLatestReleaseAsset(
-      "ISeal-plugin-developement",
-      "Valocraft"
-    );
-    const PPdownloadLink = await getLatestReleaseAsset(
-      "ISeal-plugin-developement",
-      "ParkourProject"
-    );
+export async function resourcepack(interaction) {
+  try {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
-      .setTitle("Download Link for the plugins!")
+      .setTitle("Resource Pack")
       .setDescription(
-        `[Click me to download PowerGems](${PGdownloadLink})
-[Click me to download OrePowers](${OPdownloadLink})
-[Click me to download Valocraft](${VCdownloadLink})
-[Click me to download ParkourProject](${PPdownloadLink})`
+        `[Click me to download the default resourcepack for PowerGems](${resourcepackattachmentURL})
+[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})`
       )
       .setTimestamp()
       .setFooter({

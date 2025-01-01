@@ -1,6 +1,6 @@
 // MIT License
 
-// Copyright (c) 2024 LunarcatOwO
+// Copyright (c) 2024 LunarcatOwO, ISeal
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,12 +36,12 @@ export async function getLatestReleaseAsset(owner, repo) {
     if (repo === "Powergems") {
       downloadUrl =
         "https://modrinth.com/plugin/powergems";
-    } else if (repo == "OrePowers") {
+    } else if (repo === "OrePowers") {
       downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
-    } else if (repo == "Valocraft") {
+    } else if (repo === "Valocraft") {
       downloadUrl =
         "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
-    } else if (repo == "ParkourProject") {
+    } else if (repo === "ParkourProject") {
       downloadUrl =
         "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
     }
@@ -68,12 +68,12 @@ export async function getLatestPreReleaseAsset(owner, repo) {
     if (repo === "Powergems") {
       downloadUrl =
         "https://spigotmc.org/resources/1-19-4-1-20-x-powergems.108943/";
-    } else if (repo == "OrePowers") {
+    } else if (repo === "OrePowers") {
       downloadUrl = "https://www.spigotmc.org/resources/orepowers.113941/";
-    } else if (repo == "Valocraft") {
+    } else if (repo === "Valocraft") {
       downloadUrl =
         "https://www.spigotmc.org/resources/1-19-4-1-20-x-valocraft.115131/";
-    } else if (repo == "ParkourProject") {
+    } else if (repo === "ParkourProject") {
       downloadUrl =
         "https://www.spigotmc.org/resources/1-20-x-1-19-4-parkourproject.115478/";
     }

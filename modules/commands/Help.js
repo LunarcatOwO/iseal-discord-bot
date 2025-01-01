@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { EmbedBuilder } from "discord.js";
-import { getperms } from "../util/permcheck.js";
+import { getperms } from "../util/PermissionChecker.js";
 export async function help(interaction) {
   try {
     const embed = new EmbedBuilder()
