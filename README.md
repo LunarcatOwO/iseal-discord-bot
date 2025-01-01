@@ -1,3 +1,17 @@
-This bot was made for "iseal" on Discord to help with their Minecraft plugins. USE THE CODE AT YOUR OWN RISK; I'll not provide any support (and as stated in the LICENSE I'll also not provide any warranty). If you would like a custom one made by me, send me a friend request on Discord username "LunarcatOwO" and I'll get back to you as soon as I can!
+# Terms of Service
+Acceptance: By using this bot, you agree to these terms.
+Usage: You may not use the bot for illegal or harmful activities.
+Prohibited Conduct: Do not exploit or distribute bot vulnerabilities.
+Disclaimer: The bot is provided “as is” without warranty of any kind.
+Limitation of Liability: Bot owners are not liable for damages from use or inability to use the bot.
+Termination: We may revoke access to the bot at any time for violations.
+Changes: These terms may be updated without notice. Continued use of the bot constitutes acceptance.
 
-[Donate to me!](https://ko-fi.com/lunarcatOwO)
+# Privacy Policy
+Data Collection: We may collect usernames, message content, and IDs to operate the bot.
+Use of Data: Collected data is used only for providing bot features.
+Data Sharing: We do not sell or share data with third parties, except as required by law.
+Data Retention: We keep data only as long as needed for bot functionality.
+Children’s Data: The bot is not intended for users under the minimum age set by Discord.
+Changes: We may update this policy; continued use of the bot indicates acceptance of the changes.
+Contact: For questions, contact the bot owner.
