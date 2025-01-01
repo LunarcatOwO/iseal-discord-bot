@@ -261,15 +261,7 @@ BOT.on("messageCreate", async (message) => {
 });
 BOT.on("messageCreate", async (message) => {
   if (!message.author.bot) return;
-  if (message.channel.type == 1) {
-    console.log(
-      "Bot who dmed the bot is: " +
-        message.author.id +
-        " and the bot is: " +
-        message.author.bot
-    );
-    return;
-  } else handlebots(message);
+  else handlebots(message);
 });
 BOT.on("guildMemberAdd", async (member) => {
   await DM(
