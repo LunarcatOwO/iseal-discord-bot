@@ -131,7 +131,7 @@ BOT.on("interactionCreate", async (interaction) => {
 
 import { updateModal } from "./modules/modals/update.js";
 import { modmailModal } from "./modules/modals/modmail.js";
-import { adPendingModal, adApprove, adDeny  } from "./modules/modals/ad.js";
+import { adPendingModal, adApprove, adDeny } from "./modules/modals/ad.js";
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
@@ -142,15 +142,16 @@ BOT.on("interactionCreate", async (interaction) => {
     modmailModal(interaction);
   }
   if (interaction.customId == "ad") {
-    adPendingModal(interaction);}
+    adPendingModal(interaction);
+  }
 });
-BOT.on('interactionCreate', async (interaction) => {
+BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
 
-  if (interaction.customId === 'AdApprove') {
-    await adApprove(interaction,BOT);
-  } else if (interaction.customId === 'AdDeny') {
-    await adDeny(interaction,BOT);
+  if (interaction.customId === "AdApprove") {
+    await adApprove(interaction, BOT);
+  } else if (interaction.customId === "AdDeny") {
+    await adDeny(interaction, BOT);
   }
 });
 
@@ -199,11 +200,14 @@ BOT.on("messageCreate", async (message) => {
     if (message.channel.type == 1 && message.author.id !== BOT.user.id) {
       if (message.content.startsWith(goofycheck)) {
         const decodedMessage = atob(goofy);
-        await message.reply(decodedMessage.replace('${message.author.id}', message.author.id));
-      }else{
-      await message.reply(
-        `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
-      );}
+        await message.reply(
+          decodedMessage.replace("${message.author.id}", message.author.id)
+        );
+      } else {
+        await message.reply(
+          `**Hey <@${message.author.id}>. I am a bot, cannot assist you! If you want to report a bug put it in https://discord.com/channels/1157645386480091156/1157659553345831012 if you have a suggestion put it in https://discord.com/channels/1157645386480091156/1157664317932584970 **`
+        );
+      }
     } else return;
   } catch (error) {
     console.error(error);
@@ -211,6 +215,7 @@ BOT.on("messageCreate", async (message) => {
 });
 import { handlemessagesiumalrity } from "./modules/util/handlemessagesiumalrity.js";
 import { DM } from "./modules/util/directmessage.js";
+import { handlebots } from "./modules/util/handlebots.js";
 BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
@@ -254,7 +259,15 @@ BOT.on("messageCreate", async (message) => {
   else if (message.channel.id !== stickyMessage.channelId) return;
   else handleStickyMessage(message, stickyMessage);
 });
+BOT.on("messageCreate", async (message) => {
+  if (!message.author.bot) return;
+  else handlebots(message);
+});
 BOT.on("guildMemberAdd", async (member) => {
-  await DM(BOT, member.user.id, `Hello ${member.displayName}, Welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970`);
+  await DM(
+    BOT,
+    member.user.id,
+    `Hello ${member.displayName}, Welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970`
+  );
 });
 BOT.login(TOKEN);
