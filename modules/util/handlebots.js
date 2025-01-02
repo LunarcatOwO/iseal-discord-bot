@@ -71,10 +71,9 @@ export async function handlebots(message) {
       if (botAlerts[message.author.id].length <= 3) {
         await channel.send(
           message.content +
-            "\n was deleted because it was sent by bot: " +
+            "\n# was deleted because it was sent by bot: " +
             message.author.id +
-            "\n" +
-            " and is not whitelisted."
+            "\n# and is not whitelisted."
         );
       }
     }
