@@ -168,12 +168,13 @@ export async function adApprove(interaction, BOT) {
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
     fs.writeFileSync(messageMapPath, JSON.stringify(messageMap, null, 2));
-
+    
+    // Delete the pending advertisement message
+    await interaction.message.delete();
     await interaction.reply({
       content: "The advertisement has been approved and sent.",
       ephemeral: true,
     });
-    await interaction.message.delete();
   } catch (error) {
     console.log(error);
     try {
