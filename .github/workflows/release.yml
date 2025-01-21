@@ -37,7 +37,7 @@ jobs:
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "New ISEAL Discord Bot release!"
+          content: ""
           embed-title: "🎉 Bot Release v${{ steps.package.outputs.version }}"
           embed-color: 5814783
           embed-author-name: ${{ github.actor }}
