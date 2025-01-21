@@ -32,12 +32,16 @@ jobs:
                     "name": "📝 Commit Message",
                     "value": "${{ github.event.head_commit.message }}",
                     "inline": false
+                  },
+                  {
+                    "name": "🔗 Commit URL",
+                    "value": "${{ github.event.head_commit.url }}",
+                    "inline": false
                   }
                 ],
                 "footer": {
                   "text": "GitHub Actions"
                 },
-                "timestamp": "${{ github.event.head_commit.timestamp }}",
-                "url": "${{ github.event.head_commit.url }}"
+                "timestamp": "${{ github.event.head_commit.timestamp }}"
               }]
             }
