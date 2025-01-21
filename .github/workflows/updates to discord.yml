@@ -1,23 +1,24 @@
+name: Discord Bot Updates
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
-  github-releases-to-discord:
+  discord-notification:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Github Releases To Discord
-        uses: SethCohen/github-releases-to-discord@v1.15.1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Discord Webhook
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
         with:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
-          color: "2105893"
-          username: "Release Changelog"
-          avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          content: "The bot has updated!"
-          footer_title: "Changelog"
-          footer_icon_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          footer_timestamp: true
-          max_description: '4096'
-          reduce_headings: true
+          args: |
+            🔄 New update to ISEAL Discord Bot!
+            👤 Author: ${{ github.actor }}
+            📝 Commit Message: ${{ github.event.head_commit.message }}
+            🔗 Commit Link: ${{ github.event.head_commit.url }}

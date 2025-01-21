@@ -155,15 +155,20 @@ export async function adApprove(interaction, BOT) {
     const channel = interaction.guild.channels.cache.get(approvedAdsChannel);
 
     // Send the original message to the approved ads channel
-    await channel.send(originalMessage, { allowedMentions: { parse: [] } });
+    await channel.send(`@silent ${originalMessage}`, { allowedMentions: { parse: [] } });
     await channel.send(
-      `Sent by: <@${userId}>\n-# The ad is not official and is not endorsed by the server staff. `,
+      `@silent The following advertisement is sent by: <@${userId}>\n-# The advertisment is not official and is not endorsed by the server staff. `,
       { allowedMentions: { parse: [] } }
     );
     await DM(
       BOT,
       userId,
-      `Your advertisement has been approved and sent to the server.\nAdvertisement:\n${originalMessage}`
+      `@silent Your advertisement has been approved and sent to the server.`
+    );
+    await DM(
+      BOT,
+      userId,
+      `@silent Advertisement:\n${originalMessage}`
     );
     // Optionally delete the mapping since it's no longer needed
     delete messageMap[messageId];
@@ -219,7 +224,12 @@ export async function adDeny(interaction, BOT) {
     await DM(
       BOT,
       userId,
-      `Your advertisement has been Denied.\nAdvertisement:\n${originalMessage}`
+      `@silent Your advertisement has been Denied.`
+    );
+    await DM(
+      BOT,
+      userId,
+      `@silent Advertisement:\n${originalMessage}`
     );
     // Delete the mapping from messageMap
     delete messageMap[messageId];
