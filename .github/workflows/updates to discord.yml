@@ -18,7 +18,26 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
         with:
           args: |
-            🔄 New update to ISEAL Discord Bot!
-            👤 Author: ${{ github.actor }}
-            📝 Commit Message: ${{ github.event.head_commit.message }}
-            🔗 Commit Link: ${{ github.event.head_commit.url }}
+            {
+              "embeds": [{
+                "title": "🔄 New update to ISEAL Discord Bot!",
+                "color": 5814783,
+                "fields": [
+                  {
+                    "name": "👤 Author",
+                    "value": "${{ github.actor }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "📝 Commit Message",
+                    "value": "${{ github.event.head_commit.message }}",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "GitHub Actions"
+                },
+                "timestamp": "${{ github.event.head_commit.timestamp }}",
+                "url": "${{ github.event.head_commit.url }}"
+              }]
+            }
