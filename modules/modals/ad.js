@@ -219,7 +219,7 @@ export async function adDeny(interaction, BOT) {
       });
       return;
     }
-//1
+
     const { originalMessage, userId } = mapping;
     await DM(
       BOT,
