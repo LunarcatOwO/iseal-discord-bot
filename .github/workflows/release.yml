@@ -1,33 +1,47 @@
-name: Release
+name: Release and Notify
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to main branch
+      - main
 
 jobs:
-  release:
+  release-and-notify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'  # Set the version of Node.js
+          node-version: '16'
+
       - name: Get version
         id: package
-        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.package.outputs.version }}
           release_name: Main Release ${{ steps.package.outputs.version }}
           draft: false
           prerelease: false
+
+      - name: Discord Webhook Notification
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: "New ISEAL Discord Bot release!"
+          embed-title: "🎉 Bot Release v${{ steps.package.outputs.version }}"
+          embed-color: 5814783
+          embed-author-name: ${{ github.actor }}
+          embed-description: "A new version of the ISEAL Discord Bot has been released.\n\nCommit message: ${{ github.event.head_commit.message }}"
+          embed-footer-text: "GitHub Actions"
+          embed-timestamp: ${{ github.event.head_commit.timestamp }}
+          embed-url: ${{ github.event.head_commit.url }}
