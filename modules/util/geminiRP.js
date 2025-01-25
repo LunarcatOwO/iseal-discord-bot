@@ -45,6 +45,6 @@ export async function geminiRP(message) {
         return response.toLowerCase().includes("yes");
     } catch (error) {
         console.error(error);
-        return false;
+        return true;
     }
 }
