@@ -23,6 +23,7 @@ import fs from "fs";
 import path from "path";
 import stringSimilarity from "string-similarity";
 import { fileURLToPath } from "url";
+import { geminiRP } from "./geminiRP.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,7 @@ const __dirname = path.dirname(__filename);
 export async function handlemessagesiumalrity(message) {
   try {
     let foundHighSimilarity = false;
+    let foundSimularity = false;
     let overlySimilar = false;
     let text = message.content;
     let test = text.toLowerCase();
@@ -45,43 +47,49 @@ export async function handlemessagesiumalrity(message) {
         example.toLowerCase()
       );
       if (similarity >= 0.7) {
-        await message.reply(
-          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
-        );
+        foundSimularity = true;
         foundHighSimilarity = true;
         break;
       }
       if (similarity >= 0.5 && !foundHighSimilarity) {
-        await message.reply(
-          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
-        );
+        foundSimularity = true;
         break;
       }
     }
-    if (foundHighSimilarity) {
-      console.log(`attempting to add new example: ${test}`);
-      for (let example of examples) {
-        let similarity = stringSimilarity.compareTwoStrings(
-          test,
-          example.toLowerCase()
+    if (foundSimularity) {
+      const checkGemini = await geminiRP(text);
+      if (checkGemini) {
+        await message.reply(
+          `<@${message.author.id}> are you looking for the Resourcepack? If so, please read <#1296440139504943131>`
         );
-        if (similarity >= 1) {
-          overlySimilar = true;
-          break;
+        if (foundHighSimilarity) {
+          console.log(`attempting to add new example: ${test}`);
+          for (let example of examples) {
+            let similarity = stringSimilarity.compareTwoStrings(
+              test,
+              example.toLowerCase()
+            );
+            if (similarity >= 1) {
+              overlySimilar = true;
+              break;
+            }
+          }
+          if (overlySimilar) {
+            console.log(
+              `Found exact same message: ${test} not adding to examples`
+            );
+            return;
+          } else {
+            examples.push(test);
+            fs.writeFileSync(
+              examplesFilePath,
+              JSON.stringify({ examples }, null, 2),
+              "utf8"
+            );
+            console.log(`Added new example: ${test}`);
+            return;
+          }
         }
-      }
-      if (overlySimilar) {
-        console.log(`Found exact same message: ${test} not adding to examples`);
-        return;
-      } else {
-        examples.push(test);
-        fs.writeFileSync(
-          examplesFilePath,
-          JSON.stringify({ examples }, null, 2),
-          "utf8"
-        );
-        console.log(`Added new example: ${test}`);
-        return;
       }
     }
   } catch (error) {

@@ -31,13 +31,11 @@ export const resourcepackattachmentURL =
 export const ModMailCD = 60; //In minutes
 export const adCD = 1440; //In minutes
 export const approvedAdsChannel = "1257573049251794995";
-export const stickyMessageCD = 10000000; //In milliseconds
 export const OWNER_ID = process.env.OWNER_ID;
+export const geminiKey = process.env.GEMINI_API_KEY;
 export const TRIGGER_ROLES = ["ISeal", "Community Manager", "Staff"];
-export const resourcepackmessageID = "1193993805012140103";
 export const modmailChannel = "1242816508145569792";
-export const adPendingChannel = "1301012028026130493";
-export const magicresourcepackmessageID = "1194529976666570863";
+export const adPendingChannel = "1301012028026130493"
 export const commands = [
   {
     name: "help",
@@ -157,7 +155,3 @@ export const commands = [
     ],
   },
 ];
-//why are you here. you shouldnt be here. you should be in the main.js file. go back there
-export const goofy =
-  "c3R1cGlkIGh1bWFuIHdobyBkbyB5b3UgdGhpbmsgeW91IGFyZSA8QCR7bWVzc2FnZS5hdXRob3IuaWR9PiBub3cgc2h1dCB0aGUgaGVsbCB1cC4=";
-export const goofycheck = atob("c3R1cGlkIGJvdA==");
