@@ -8,6 +8,8 @@ on:
 jobs:
   release-and-notify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,15 +25,14 @@ jobs:
         shell: bash
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.package.outputs.version }}
-          release_name: Main Release ${{ steps.package.outputs.version }}
-          draft: false
-          prerelease: false
+          TAG: ${{ steps.package.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            --title "Main Release $TAG" \
+            --notes "Release version $TAG" \
+            --target ${{ github.sha }}
 
       - name: Discord Webhook Notification
         uses: tsickert/discord-webhook@v5.3.0
