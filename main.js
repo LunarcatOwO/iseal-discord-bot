@@ -20,19 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import {
-  Client,
-  GatewayIntentBits,
-  REST,
-  Routes,
-  Partials,
-} from "discord.js";
+import { Client, GatewayIntentBits, REST, Routes, Partials } from "discord.js";
 // Loading the environment variables
-import {
-  TOKEN,
-  CLIENT_ID,
-  commands,
-} from "./constants.js";
+import { TOKEN, CLIENT_ID, commands } from "./constants.js";
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -171,9 +161,9 @@ BOT.on("messageCreate", async (message) => {
       );
     }
     if (message.channel.type == 1 && message.author.id !== BOT.user.id) {
-        await message.reply(
-          `**Hey <@${message.author.id}>. I am a bot, cannot assist you!**`
-        );
+      await message.reply(
+        `**Hey <@${message.author.id}>. I am a bot, cannot assist you!**`
+      );
     }
   } catch (error) {
     console.error(error);
