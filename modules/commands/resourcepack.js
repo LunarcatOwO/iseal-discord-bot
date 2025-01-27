@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 import { getperms } from "../util/permcheck.js";
-import { magicresourcepackattachmentURL, resourcepackattachmentURL } from "../../constants.js";
+import { magicresourcepackattachmentURL, resourcepackattachmentURL, legacyresourcepackattachmentURL } from "../../constants.js";
 import { EmbedBuilder } from "discord.js";
 export async function resourcepack(interaction) {
   try {
@@ -29,7 +29,8 @@ export async function resourcepack(interaction) {
       .setTitle("Resource Pack")
       .setDescription(
         `[Click me to download the default resourcepack for PowerGems](${resourcepackattachmentURL})
-[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})`
+[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})
+[Click me to download the legacy resource pack for PowerGems (NOT RECOMMENDED)](${legacyresourcepackattachmentURL})`
       )
       .setTimestamp()
       .setFooter({

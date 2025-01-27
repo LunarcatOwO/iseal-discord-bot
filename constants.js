@@ -28,6 +28,8 @@ export const magicresourcepackattachmentURL =
   "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/PowerGems_magic_pack.zip";
 export const resourcepackattachmentURL =
   "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/Powergems_Pack.zip";
+export const legacyresourcepackattachmentURL =
+  "https://github.com/ISeal-plugin-developement/Powergems-ResoucePack/raw/main/Powergems_Pack_Leguacy.zip"
 export const ModMailCD = 60; //In minutes
 export const adCD = 1440; //In minutes
 export const approvedAdsChannel = "1257573049251794995";
