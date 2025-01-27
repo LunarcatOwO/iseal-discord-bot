@@ -29,8 +29,8 @@ export async function resourcepack(interaction) {
       .setTitle("Resource Pack")
       .setDescription(
         `[Click me to download the default resourcepack for PowerGems](${resourcepackattachmentURL})
-[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})
-[Click me to download the legacy resource pack for PowerGems (NOT RECOMMENDED)](${legacyresourcepackattachmentURL})`
+[Click me to download the magic resource pack for PowerGems](${magicresourcepackattachmentURL})`
+// [Click me to download the legacy resource pack for PowerGems (NOT RECOMMENDED)](${legacyresourcepackattachmentURL})
       )
       .setTimestamp()
       .setFooter({
