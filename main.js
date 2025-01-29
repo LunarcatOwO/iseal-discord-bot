@@ -20,12 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// Import required Discord.js components
 import { Client, GatewayIntentBits, REST, Routes, Partials } from "discord.js";
-// Loading the environment variables
+// Import environment variables and commands
 import { TOKEN, CLIENT_ID, commands } from "./constants.js";
 
+// Initialize Discord REST API client
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
+ // Register slash commands with Discord
 try {
   console.log("Started refreshing application (/) commands.");
 
@@ -39,6 +42,7 @@ try {
   console.error(error);
 }
 
+// Initialize Discord bot client with required intents and settings
 export const BOT = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -57,9 +61,13 @@ export const BOT = new Client({
   ],
   allowedMentions: { parse: ["users", "roles", "everyone"] },
 });
+
+// Bot ready event handler
 BOT.on("ready", () => {
   console.log(`Logged in as ${BOT.user.tag}!`);
 });
+
+// Import command handlers
 import {
   help,
   modmail,
@@ -75,6 +83,8 @@ import {
   ad,
   github,
 } from "./modules/commands/commands.js";
+
+// Slash command interaction handler
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -122,9 +132,12 @@ BOT.on("interactionCreate", async (interaction) => {
   }
 });
 
+// Import modal handlers
 import { updateModal } from "./modules/modals/update.js";
 import { modmailModal } from "./modules/modals/modmail.js";
 import { adPendingModal, adApprove, adDeny } from "./modules/modals/ad.js";
+
+// Modal submission handler
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isModalSubmit()) return;
 
@@ -138,6 +151,8 @@ BOT.on("interactionCreate", async (interaction) => {
     adPendingModal(interaction);
   }
 });
+
+// Button interaction handler
 BOT.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
 
@@ -147,11 +162,14 @@ BOT.on("interactionCreate", async (interaction) => {
     await adDeny(interaction, BOT);
   }
 });
+
+// Thread management
 import { handleThread } from "./modules/util/handleThreads.js";
 BOT.on("threadCreate", async (thread) => {
   await handleThread(thread);
 });
 
+// Bot mention and DM response handler
 BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
@@ -169,9 +187,13 @@ BOT.on("messageCreate", async (message) => {
     console.error(error);
   }
 });
+
+// Import utility handlers
 import { handlemessagesiumalrity } from "./modules/util/handlemessagesiumalrity.js";
 import { DM } from "./modules/util/directmessage.js";
 import { handlebots } from "./modules/util/handlebots.js";
+
+// Message similarity checker for specific channel
 BOT.on("messageCreate", async (message) => {
   try {
     if (message.author.bot) return;
@@ -181,6 +203,8 @@ BOT.on("messageCreate", async (message) => {
     console.error(error);
   }
 });
+
+// Sticky message handler
 import { handleStickyMessage } from "./modules/util/handleStickyMessage.js";
 let stickyMessage = {
   channelId: "1157659447976534087",
@@ -188,15 +212,21 @@ let stickyMessage = {
   content:
     "### Read https://discord.com/channels/1157645386480091156/1296440139504943131 before asking for the resourcepack!",
 };
+
+// Sticky message event handler
 BOT.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   else if (message.channel.id !== stickyMessage.channelId) return;
   else handleStickyMessage(message, stickyMessage);
 });
+
+// Bot message handler
 BOT.on("messageCreate", async (message) => {
   if (!message.author.bot) return;
   else handlebots(message);
 });
+
+// New member welcome message handler
 BOT.on("guildMemberAdd", async (member) => {
   await DM(
     BOT,
@@ -204,4 +234,6 @@ BOT.on("guildMemberAdd", async (member) => {
     `Hello ${member.displayName}, Welcome to ISeals Plugins Server! For the Powergems resourcepack run \`/resourcepack\` in here or in the server. If you have a bug to report put it in https://discord.com/channels/1157645386480091156/1157659553345831012 and if you have a suggestion then put it in https://discord.com/channels/1157645386480091156/1157664317932584970`
   );
 });
+
+// Start the bot
 BOT.login(TOKEN);
