@@ -1,3 +1,15 @@
+
+
+
+
+
+# THIS BOT IS NO LONGER IN OPERATION
+
+
+
+
+
+
 # Terms of Service
 1. Acceptance: By using this bot, you agree to these terms.
 2. Usage: You may not use the bot for illegal or harmful activities.
